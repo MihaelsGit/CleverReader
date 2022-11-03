@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { uploadFile } from "../constants/axios";
+import { uploadFile } from "../utils/axios";
 
 export default function FileUpload() {
   const [pdfFile, setPdfFile] = useState(null);
