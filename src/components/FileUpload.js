@@ -26,10 +26,7 @@ export default function FileUpload({ setLink }) {
     if (pdfFile !== null) {
       const data = new FormData();
       data.append("file", pdfFile);
-
-      const res = uploadFile({ data: data });
-
-      setLink(res);
+      uploadFile({ data: data }).then(data => setLink(data));
     }
   };
 
