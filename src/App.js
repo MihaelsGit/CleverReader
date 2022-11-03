@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PDFViewer from "./components/PDFViewer";
 import FileUpload from "./components/FileUpload";
 
-import { test } from "./constants/testUrls";
+import { BASE_URL, DOWNLOAD_URL } from "./constants/path";
 
 function App() {
   const [url, setUrl] = useState("");
@@ -11,9 +11,7 @@ function App() {
     <div className="App">
       <h1>Hello there</h1>
       <FileUpload setLink={setUrl} />
-      <PDFViewer
-        url={"http://localhost:8000/api/v1/file/download?name=" + url}
-      />
+      <PDFViewer url={BASE_URL + DOWNLOAD_URL + url} />
     </div>
   );
 }
