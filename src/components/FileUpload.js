@@ -27,7 +27,7 @@ export default function FileUpload() {
       const data = new FormData();
       data.append("file", pdfFile);
 
-      const res = uploadFile(data);
+      const res = uploadFile({data: data});
     }
   };
 
