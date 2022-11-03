@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { uploadFile } from "../utils/axios";
 
+import CustomButton from "./CustomButton";
+import FileDropzone from "./FileDropzone";
+
+import "../styles/FileUpload.css";
+
 export default function FileUpload() {
   const [pdfFile, setPdfFile] = useState(null);
 
@@ -27,21 +32,22 @@ export default function FileUpload() {
       const data = new FormData();
       data.append("file", pdfFile);
 
-      const res = uploadFile({data: data});
+      const res = uploadFile({ data: data });
     }
   };
 
   return (
-    <div>
-      <form className="form-group" onSubmit={handlePdfSubmit}>
+    <div className="flex-container">
+      <FileDropzone />
+      {/*<form className="form-group" onSubmit={handlePdfSubmit}>
         <input
           type="file"
           className="form-group"
           required
           onChange={handlePdfFileChange}
         />
-        <button type="submit">UPLOAD</button>
-      </form>
+  </form>*/}
+      <CustomButton />
     </div>
   );
 }
