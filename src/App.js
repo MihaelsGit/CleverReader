@@ -11,7 +11,9 @@ function App() {
     <div className="App">
       <h1>Hello there</h1>
       <FileUpload setLink={setUrl} />
-      <PDFViewer url={url} />
+      <PDFViewer
+        url={"http://localhost:8000/api/v1/file/download?name=" + url}
+      />
     </div>
   );
 }
