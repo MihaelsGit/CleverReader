@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { BASE_URL, UPLOAD_URL } from "../constants/path";
 import { uploadFile } from "../constants/axios";
 
 export default function FileUpload() {

@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf";
 import pdfjsWorker from "pdfjs-dist/legacy/build/pdf.worker.entry";
-import pdfViewerStyle from "../styles/pdfViewerStyle.css";
 
 export default function PDFViewer({ url }) {
   const canvasRef = useRef();
@@ -58,7 +57,7 @@ export default function PDFViewer({ url }) {
   const prevPage = () => currPage > 1 && setCurrPage(currPage - 1);
 
   return (
-    <div style={pdfViewerStyle}>
+    <div>
       <button id="prev" onClick={prevPage}>
         Previous
       </button>
