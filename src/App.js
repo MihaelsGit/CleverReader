@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import PDFViewer from "./pdfViewer";
+import PDFViewer from "./components/PDFViewer";
 import FileUpload from "./components/FileUpload";
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
     <div className="App">
       <h1>Hello there</h1>
       <FileUpload />
-      <PDFViewer url={url} />
+      <PDFViewer url={test} />
     </div>
   );
 }

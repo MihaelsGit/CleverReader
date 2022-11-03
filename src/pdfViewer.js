@@ -15,7 +15,7 @@ export default function PDFViewer({ url }) {
     (pageNum, pdf = pdfRef) => {
       pdf &&
         pdf.getPage(pageNum).then((page) => {
-          const viewport = page.getViewport({ scale: 1.5 });
+          const viewport = page.getViewport({ scale: 1.2 });
           const canvas = canvasRef.current;
 
           var outputScale = window.devicePixelRatio || 1;

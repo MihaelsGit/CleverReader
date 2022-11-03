@@ -1,14 +1,9 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf";
 import pdfjsWorker from "pdfjs-dist/legacy/build/pdf.worker.entry";
+import pdfViewerStyle from "../styles/pdfViewerStyle.css";
 
-// PDF viewer
-// Input param is PDF url (it has to be hosted on some server, it can't be locally uploaded)
 export default function PDFViewer({ url }) {
-  const styles = {
-    border: "2px solid rgba(0, 0, 0, 0.5)",
-  };
-
   const canvasRef = useRef();
   pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
@@ -19,13 +14,13 @@ export default function PDFViewer({ url }) {
     (pageNum, pdf = pdfRef) => {
       pdf &&
         pdf.getPage(pageNum).then((page) => {
-          const viewport = page.getViewport({ scale: 1.5 });
+          const viewport = page.getViewport({ scale: 1.2 });
           const canvas = canvasRef.current;
 
           var outputScale = window.devicePixelRatio || 1;
 
-          canvas.height = viewport.height;
-          canvas.width = viewport.width;
+          canvas.height = viewport.height + 300;
+          canvas.width = viewport.width + 300;
 
           var transform =
             outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
@@ -63,7 +58,7 @@ export default function PDFViewer({ url }) {
   const prevPage = () => currPage > 1 && setCurrPage(currPage - 1);
 
   return (
-    <div style={styles}>
+    <div style={pdfViewerStyle}>
       <button id="prev" onClick={prevPage}>
         Previous
       </button>

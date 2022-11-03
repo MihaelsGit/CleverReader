@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { BASE_URL, UPLOAD_URL } from "../constants/path";
+import { uploadFile } from "../constants/axios";
 
 export default function FileUpload() {
   const [pdfFile, setPdfFile] = useState(null);
@@ -27,11 +29,7 @@ export default function FileUpload() {
       const data = new FormData();
       data.append("file", pdfFile);
 
-      axios
-        .post("http://localhost:8000/api/v1/file/upload", data, {})
-        .then((res) => {
-          console.log("response ", res);
-        });
+      const res = uploadFile(data);
     }
   };
 
