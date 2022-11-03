@@ -1,7 +1,41 @@
 import React, { useState, useRef } from "react";
 import PDFViewer from "./pdfViewer";
+import axios from "axios";
 
 function App() {
+  const [pdfFile, setPdfFile] = useState(null);
+
+  const fileType = ["application/pdf"];
+
+  const handlePdfFileChange = (e) => {
+    console.log("AAAA", e.target.files[0]);
+    let selectedFile = e.target.files[0];
+    if (selectedFile) {
+      if (selectedFile && fileType.includes(selectedFile.type)) {
+        let reader = new FileReader();
+        reader.readAsDataURL(selectedFile);
+        reader.onloadend = (e) => {
+          setPdfFile(e.target.result);
+        };
+      }
+    } else {
+      setPdfFile(null);
+    }
+  };
+
+  const handlePdfSubmit = (e) => {
+    e.preventDefault();
+    if (pdfFile !== null) {
+      const data = new FormData();
+      data.append("file", pdfFile);
+      axios
+        .post("http://localhost:8000/api/v1/file/upload", data, {})
+        .then((res) => {
+          console.log("response ", res);
+        });
+    }
+  };
+
   const styles = {
     border: "2px solid rgba(0, 0, 0, 0.5)",
   };
@@ -25,6 +59,15 @@ function App() {
   return (
     <div className="App">
       <h1>Hello there</h1>
+      <form className="form-group" onSubmit={handlePdfSubmit}>
+        <input
+          type="file"
+          className="form-group"
+          required
+          onChange={handlePdfFileChange}
+        />
+        <button type="submit">UPLOAD</button>
+      </form>
       <div style={styles}>
         {/*PDF viewer, code in pdfViewer.js*/}
         <PDFViewer url={url} />
