@@ -6,7 +6,7 @@ export const uploadFile = async ({ data }) => {
   let path = BASE_URL + UPLOAD_URL;
 
   await axios
-    .post(path, { data: data })
+    .post(path, data)
     .then((res) => {
       response = res.data;
     })
