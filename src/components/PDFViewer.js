@@ -18,8 +18,8 @@ export default function PDFViewer({ url }) {
 
           var outputScale = window.devicePixelRatio || 1;
 
-          canvas.height = viewport.height + 300;
-          canvas.width = viewport.width + 300;
+          canvas.height = viewport.height;
+          canvas.width = viewport.width;
 
           var transform =
             outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
