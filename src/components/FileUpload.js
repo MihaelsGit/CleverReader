@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { uploadFile } from "../utils/axios";
 
-export default function FileUpload() {
+export default function FileUpload({ setLink }) {
   const [pdfFile, setPdfFile] = useState(null);
 
   const fileType = ["application/pdf"];
@@ -27,7 +27,9 @@ export default function FileUpload() {
       const data = new FormData();
       data.append("file", pdfFile);
 
-      const res = uploadFile({data: data});
+      const res = uploadFile({ data: data });
+
+      setLink(res);
     }
   };
 
