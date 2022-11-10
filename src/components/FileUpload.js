@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { uploadFile } from "../utils/axios";
 
-import CustomButton from "./CustomButton";
+import CustomButton from "./SubmitButton";
 import FileDropzone from "./FileDropzone";
 
 import "../styles/FileUpload.css";
