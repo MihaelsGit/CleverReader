@@ -7,27 +7,9 @@ import FileDropzone from "./FileDropzone";
 import "../styles/FileUpload.css";
 
 export default function FileUpload() {
-  const [pdfFile, setPdfFile] = useState(null);
+  const [pdfFile, setPdf] = useState(null);
 
-  const fileType = ["application/pdf"];
-
-  const handlePdfFileChange = (e) => {
-    let selectedFile = e.target.files[0];
-    if (selectedFile) {
-      if (selectedFile && fileType.includes(selectedFile.type)) {
-        let reader = new FileReader();
-        reader.readAsDataURL(selectedFile);
-        reader.onloadend = (e) => {
-          setPdfFile(selectedFile);
-        };
-      }
-    } else {
-      setPdfFile(null);
-    }
-  };
-
-  const handlePdfSubmit = (e) => {
-    e.preventDefault();
+  const handlePdfSubmit = () => {
     if (pdfFile !== null) {
       const data = new FormData();
       data.append("file", pdfFile);
@@ -37,17 +19,9 @@ export default function FileUpload() {
   };
 
   return (
-    <div className="flex-container">
-      <FileDropzone />
-      {/*<form className="form-group" onSubmit={handlePdfSubmit}>
-        <input
-          type="file"
-          className="form-group"
-          required
-          onChange={handlePdfFileChange}
-        />
-  </form>*/}
-      <CustomButton />
+    <div className="dropzone">
+      <FileDropzone setPDFFile={setPdf} />
+      <CustomButton uploadOnClick={handlePdfSubmit} />
     </div>
   );
 }

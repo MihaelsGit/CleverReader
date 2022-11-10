@@ -8,10 +8,24 @@ import {
   rejectStyle,
 } from "../constants/FileDropzone";
 
-function FileDropzone() {
+function FileDropzone({ setPDFFile }) {
+  const fileType = ["application/pdf"];
+
   const onDrop = useCallback((acceptedFiles) => {
-    console.log("files => ", acceptedFiles);
+    let selectedFile = acceptedFiles[0];
+    if (selectedFile) {
+      if (selectedFile && fileType.includes(selectedFile.type)) {
+        let reader = new FileReader();
+        reader.readAsDataURL(selectedFile);
+        reader.onloadend = (e) => {
+          setPDFFile(selectedFile);
+        };
+      }
+    } else {
+      setPDFFile(null);
+    }
   }, []);
+
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } =
     useDropzone({ onDrop });
 
