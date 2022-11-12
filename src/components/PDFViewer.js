@@ -59,7 +59,15 @@ export default function PDFViewer({ url }) {
   const prevPage = () => currPage > 1 && setCurrPage(currPage - 1);
 
   return (
-    <div >
+    <div>
+       <div>
+      <button id="prev" onClick={prevPage}>
+        Previous
+      </button>
+      <button id="next" onClick={nextPage}>
+        Next
+      </button>      
+      </div>
       <canvas id="pdf" ref= {canvasRef} />
     </div>
   );
