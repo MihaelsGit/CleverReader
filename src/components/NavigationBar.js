@@ -1,32 +1,36 @@
 import React from "react";
 import "../styles/NavigationBar.css";
-import IconButton from "./IconButton";
+import TooltipIconButton from "./TooltipIconButton";
 
 function NavigationBar({ onBackClick, onSummaryClick, onKnowledgeGraphClick, onSearchClick }) {
     return <nav class="navBar">
       <div>
         <div class="navLeft">
-          <IconButton 
+          <TooltipIconButton
             id="backButton" 
+            tooltipText={"Back"}
             iconPath={require('../styles/back_icon.svg').default} 
-            onButtonClick= {onBackClick}s 
+            onButtonClick= {onBackClick} 
           />
         </div>
         <div class="navRight">
-          <IconButton 
-            id = "summaryButton" 
+          <TooltipIconButton
+            id="summaryButton" 
+            tooltipText={"Summary"}
             iconPath={require('../styles/summary_icon.svg').default} 
-            onButtonClick={onSummaryClick}
+            onButtonClick= {onSummaryClick} 
           />
-          <IconButton 
-            id= "knowledgeGraphButton" 
+          <TooltipIconButton
+            id="knowledgeGraphButton" 
+            tooltipText={"Knowledge Graph"}
             iconPath={require('../styles/knowledge_graph_icon.svg').default} 
-            onButtonClick={onKnowledgeGraphClick} 
+            onButtonClick= {onKnowledgeGraphClick} 
           />
-          <IconButton 
-            id = "searchButton" 
+          <TooltipIconButton
+            id="searchButton" 
+            tooltipText={"Search"}
             iconPath={require('../styles/search_icon.svg').default} 
-            onButtonClick={onSearchClick} 
+            onButtonClick= {onSearchClick} 
           />
         </div>
       </div>
