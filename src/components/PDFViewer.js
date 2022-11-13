@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf";
-import pdfjsWorker from "pdfjs-dist/legacy/build/pdf.worker.entry";
+import * as pdfjsLib from "pdfjs-dist/build/pdf";
+import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
 
 export default function PDFViewer({ url }) {
-  const canvasRef = useRef();
+  const canvasRef = useRef(null);
   pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
   const [pdfRef, setPdfRef] = useState();
@@ -13,13 +13,15 @@ export default function PDFViewer({ url }) {
     (pageNum, pdf = pdfRef) => {
       pdf &&
         pdf.getPage(pageNum).then((page) => {
-          const viewport = page.getViewport({ scale: 1.2 });
-          const canvas = canvasRef.current;
+          const viewport = page.getViewport({scale: 2});
+          const canvas = document.getElementById('pdf');
 
           var outputScale = window.devicePixelRatio || 1;
 
-          canvas.height = viewport.height;
-          canvas.width = viewport.width;
+          canvas.width = Math.floor(viewport.width * outputScale);
+          canvas.height = Math.floor(viewport.height * outputScale);
+          canvas.style.width = Math.floor(viewport.width) + "px";
+          canvas.style.height =  Math.floor(viewport.height) + "px";
 
           var transform =
             outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
@@ -58,17 +60,15 @@ export default function PDFViewer({ url }) {
 
   return (
     <div>
+       <div>
       <button id="prev" onClick={prevPage}>
         Previous
       </button>
       <button id="next" onClick={nextPage}>
         Next
-      </button>
-      &nbsp; &nbsp;
-      <span>
-        Page: <span id="page_num"></span> / <span id="page_count"></span>
-      </span>
-      <canvas ref={canvasRef}></canvas>
+      </button>      
+      </div>
+      <canvas id="pdf" ref= {canvasRef} />
     </div>
   );
 }
