@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf";
 import pdfjsWorker from "pdfjs-dist/legacy/build/pdf.worker.entry";
+import {test} from "../constants/testUrls"
 
 export default function PDFViewer({ url }) {
   const canvasRef = useRef();
@@ -40,7 +41,7 @@ export default function PDFViewer({ url }) {
   }, [pdfRef, currPage, renderPage]);
 
   useEffect(() => {
-    const loadingTask = pdfjsLib.getDocument(url);
+    const loadingTask = pdfjsLib.getDocument(test); // This is a test link. It should be url as parameter
     loadingTask.promise.then(
       (loadedPdf) => {
         setPdfRef(loadedPdf);
