@@ -4,13 +4,13 @@ import "./styles/App.css";
 
 import CustomHeader from "./components/CustomHeader";
 import FileUpload from "./components/FileUpload";
-import NavigationBar from "./components/NavigationBar";
+
+import { projectName } from "./constants/strings";
 
 function App() {
   return (
     <div className="wrapper">
-      <CustomHeader text="CleverReader" />
-      <NavigationBar />
+      <CustomHeader text={projectName} />
       <FileUpload />
     </div>
   );
