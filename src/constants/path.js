@@ -1,2 +1,3 @@
-export const BASE_URL = "http://localhost:8000/api/v1/file";
-export const UPLOAD_URL = "/upload";
+export const BASE_URL =
+  "https://clever-reader-middleware.onrender.com/api/v1/file/";
+export const UPLOAD_URL = "upload";

@@ -7,7 +7,7 @@ import FileDropzone from "./FileDropzone";
 import "../styles/FileUpload.css";
 
 import { Link } from "react-router-dom";
-export default function FileUpload() {
+export default function FileUpload({ getFileName }) {
   const [pdfFile, setPdf] = useState(null);
 
   const handlePdfSubmit = () => {
@@ -16,6 +16,8 @@ export default function FileUpload() {
       data.append("file", pdfFile);
 
       const res = uploadFile({ data: data });
+      console.log("prvi response => ", res);
+      getFileName(res);
     }
   };
 
@@ -23,7 +25,7 @@ export default function FileUpload() {
     <div className="dropzone">
       <FileDropzone setPDFFile={setPdf} />
       <Link to="/viewFile">
-          <SubmitButton uploadOnClick={handlePdfSubmit} />
+        <SubmitButton uploadOnClick={handlePdfSubmit} />
       </Link>
     </div>
   );

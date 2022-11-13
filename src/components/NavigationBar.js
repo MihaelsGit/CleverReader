@@ -1,40 +1,48 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "../styles/NavigationBar.css";
 import TooltipIconButton from "./TooltipIconButton";
 
-function NavigationBar({ onBackClick, onSummaryClick, onKnowledgeGraphClick, onSearchClick }) {
-    return <nav class="navBar">
+function NavigationBar({
+  onBackClick,
+  onSummaryClick,
+  onKnowledgeGraphClick,
+  onSearchClick,
+}) {
+  return (
+    <nav className="navBar">
       <div>
-        <div class="navLeft">
+        <div className="navLeft">
           <TooltipIconButton
-            id="backButton" 
+            id="backButton"
             tooltipText={"Back"}
-            iconPath={require('../styles/back_icon.svg').default} 
-            onButtonClick= {onBackClick} 
+            iconPath={require("../styles/back_icon.svg").default}
+            onButtonClick={onBackClick}
           />
         </div>
-        <div class="navRight">
+        <div className="navRight">
           <TooltipIconButton
-            id="summaryButton" 
+            id="summaryButton"
             tooltipText={"Summary"}
-            iconPath={require('../styles/summary_icon.svg').default} 
-            onButtonClick= {onSummaryClick} 
+            iconPath={require("../styles/summary_icon.svg").default}
+            onButtonClick={onSummaryClick}
           />
           <TooltipIconButton
-            id="knowledgeGraphButton" 
+            id="knowledgeGraphButton"
             tooltipText={"Knowledge Graph"}
-            iconPath={require('../styles/knowledge_graph_icon.svg').default} 
-            onButtonClick= {onKnowledgeGraphClick} 
+            iconPath={require("../styles/knowledge_graph_icon.svg").default}
+            onButtonClick={onKnowledgeGraphClick}
           />
           <TooltipIconButton
-            id="searchButton" 
+            id="searchButton"
             tooltipText={"Search"}
-            iconPath={require('../styles/search_icon.svg').default} 
-            onButtonClick= {onSearchClick} 
+            iconPath={require("../styles/search_icon.svg").default}
+            onButtonClick={onSearchClick}
           />
         </div>
       </div>
-    </nav>;
-  }
-  
-  export default NavigationBar;
+    </nav>
+  );
+}
+
+export default NavigationBar;
