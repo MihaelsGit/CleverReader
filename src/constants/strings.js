@@ -1,1 +1,7 @@
 export const projectName = "CleverReader";
+
+export const dropzoneMsg =
+  "Drag 'n' drop some files here, or click to select files";
+
+export const dropzoneError =
+  "Something went wrong with upload, please try again";
