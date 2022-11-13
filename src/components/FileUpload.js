@@ -5,6 +5,7 @@ import SubmitButton from "./SubmitButton";
 import FileDropzone from "./FileDropzone";
 
 import "../styles/FileUpload.css";
+import "../styles/Link.css";
 
 import { Link } from "react-router-dom";
 export default function FileUpload({ getFileName }) {
@@ -24,7 +25,7 @@ export default function FileUpload({ getFileName }) {
   return (
     <div className="dropzone">
       <FileDropzone setPDFFile={setPdf} />
-      <Link to="/viewFile">
+      <Link to="/viewFile" className="noUnderline">
         <SubmitButton uploadOnClick={handlePdfSubmit} />
       </Link>
     </div>
