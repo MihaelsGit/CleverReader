@@ -1,15 +1,17 @@
 import React from "react";
-import PDFViewer from "./components/PDFViewer";
+
+import "./styles/App.css";
+
+import CustomHeader from "./components/CustomHeader";
 import FileUpload from "./components/FileUpload";
 
-import { test } from "./constants/testUrls";
+import { projectName } from "./constants/strings";
 
 function App() {
   return (
-    <div className="App">
-      <h1>Hello there</h1>
+    <div className="wrapper">
+      <CustomHeader text={projectName} />
       <FileUpload />
-      <PDFViewer url={test} />
     </div>
   );
 }
