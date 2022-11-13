@@ -14,7 +14,7 @@ function App() {
       <BrowserRouter>
       <Routes>
         <Route path="/" element={<CustomHeader text={projectName} />}> {/*The header is added as home page. Thus, it does not change when the file is uploaded and the content is rendered*/}
-          <Route index element={ <FileUpload />} />
+          <Route path='fileUpload' index element={ <FileUpload />} />
           <Route path='viewFile' element={<PDFViewer />}/> 
         </Route>
       </Routes>
