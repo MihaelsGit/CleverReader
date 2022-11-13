@@ -1,17 +1,20 @@
 import React from "react";
 import "../styles/NavigationBar.css";
+import { Link } from "react-router-dom";
 import TooltipIconButton from "./TooltipIconButton";
 
 function NavigationBar({ onBackClick, onSummaryClick, onKnowledgeGraphClick, onSearchClick }) {
     return <nav class="navBar">
       <div>
         <div class="navLeft">
-          <TooltipIconButton
-            id="backButton" 
-            tooltipText={"Back"}
-            iconPath={require('../styles/back_icon.svg').default} 
-            onButtonClick= {onBackClick} 
-          />
+          <Link to="/fileUpload">
+            <TooltipIconButton
+              id="backButton" 
+              tooltipText={"Back"}
+              iconPath={require('../styles/back_icon.svg').default} 
+              onButtonClick= {onBackClick} 
+            />
+          </Link>
         </div>
         <div class="navRight">
           <TooltipIconButton
