@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
 
 import {
@@ -8,21 +8,25 @@ import {
   rejectStyle,
 } from "../constants/FileDropzone";
 
+import { dropzoneDefault, dropzoneError } from "../constants/strings";
+
 function FileDropzone({ setPDFFile }) {
   const fileType = ["application/pdf"];
 
+  const [dropzoneText, setDropzoneText] = useState(dropzoneDefault);
+
   const onDrop = useCallback((acceptedFiles) => {
     let selectedFile = acceptedFiles[0];
-    if (selectedFile) {
-      if (selectedFile && fileType.includes(selectedFile.type)) {
-        let reader = new FileReader();
-        reader.readAsDataURL(selectedFile);
-        reader.onloadend = (e) => {
-          setPDFFile(selectedFile);
-        };
-      }
+    if (selectedFile && fileType.includes(selectedFile.type)) {
+      let reader = new FileReader();
+      reader.readAsDataURL(selectedFile);
+      reader.onloadend = (e) => {
+        setPDFFile(selectedFile);
+        setDropzoneText(selectedFile.name);
+      };
     } else {
       setPDFFile(null);
+      setDropzoneText(dropzoneError);
     }
   }, []);
 
@@ -43,7 +47,7 @@ function FileDropzone({ setPDFFile }) {
     <div>
       <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
-        <p>Drag 'n' drop some files here, or click to select files</p>
+        <p>{dropzoneText}</p>
       </div>
     </div>
   );
