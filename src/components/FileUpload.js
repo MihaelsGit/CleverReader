@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { uploadFile } from "../utils/axios";
 
-import CustomButton from "./SubmitButton";
+import SubmitButton from "./SubmitButton";
 import FileDropzone from "./FileDropzone";
 
 import "../styles/FileUpload.css";
@@ -23,9 +23,8 @@ export default function FileUpload() {
     <div className="dropzone">
       <FileDropzone setPDFFile={setPdf} />
       <Link to="/viewFile">
-          <CustomButton uploadOnClick={handlePdfSubmit} />
+          <SubmitButton uploadOnClick={handlePdfSubmit} />
       </Link>
-     
     </div>
   );
 }

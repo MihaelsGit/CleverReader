@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import "../styles/Button.css";
 
-function CustomButton({ uploadOnClick }) {
+function SubmitButton({ uploadOnClick }) {
   return (
     <div className="button">
       <button
@@ -17,4 +17,4 @@ function CustomButton({ uploadOnClick }) {
   );
 }
 
-export default CustomButton;
+export default SubmitButton;
