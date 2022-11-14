@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../styles/NavigationBar.css";
+import { Link } from "react-router-dom";
 import TooltipIconButton from "./TooltipIconButton";
 import { useLocation } from "react-router-dom";
 
