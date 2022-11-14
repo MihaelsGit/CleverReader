@@ -68,6 +68,7 @@ export default function PDFViewer({ fileID }) {
 
   return (
     <div>
+      <canvas id="pdf" ref={canvasRef} />
       <div>
         <button id="prev" onClick={prevPage}>
           Previous
@@ -76,7 +77,6 @@ export default function PDFViewer({ fileID }) {
           Next
         </button>
       </div>
-      <canvas id="pdf" ref={canvasRef} />
     </div>
   );
 }
