@@ -27,6 +27,7 @@ function FileDropzone({ setPDFFile }) {
       setPDFFile(null);
       setDropzoneText(dropzoneError);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } =

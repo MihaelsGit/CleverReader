@@ -13,6 +13,7 @@ export default function FileUpload({ setFileId }) {
 
   useEffect(() => {
     setFileId("");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handlePdfSubmit = async () => {
