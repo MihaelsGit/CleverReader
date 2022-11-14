@@ -8,17 +8,16 @@ import "../styles/FileUpload.css";
 import "../styles/Link.css";
 
 import { Link } from "react-router-dom";
-export default function FileUpload({ getFileName }) {
+export default function FileUpload({ setFileId }) {
   const [pdfFile, setPdf] = useState(null);
 
-  const handlePdfSubmit = () => {
+  const handlePdfSubmit = async () => {
     if (pdfFile !== null) {
       const data = new FormData();
       data.append("file", pdfFile);
 
-      const res = uploadFile({ data: data });
-      console.log("prvi response => ", res);
-      getFileName(res);
+      const res = await uploadFile({ data: data });
+      setFileId(res);
     }
   };
 

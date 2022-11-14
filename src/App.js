@@ -8,15 +8,14 @@ import PDFViewer from "./components/PDFViewer";
 import { projectName } from "./constants/strings";
 
 function App() {
-  const [fileName, setFileName] = useState("");
-
+  const [fileID, setFileID] = useState("");
   return (
     <div className="wrapper">
-      <CustomHeader text={projectName} />
       <BrowserRouter>
+        <CustomHeader text={projectName} />
         <Routes>
-          <Route index element={<FileUpload getFileName={setFileName} />} />
-          <Route path="viewFile" element={<PDFViewer name={fileName} />} />
+          <Route path="/" element={<FileUpload setFileId={setFileID} />} />
+          <Route path="/viewFile" element={<PDFViewer fileID={fileID} />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -8,7 +8,6 @@ export const uploadFile = async ({ data }) => {
   await axios
     .post(path, data)
     .then((res) => {
-      console.log("response u axiosu => ", res);
       response = res.data;
     })
     .catch((err) => {
@@ -18,9 +17,9 @@ export const uploadFile = async ({ data }) => {
   return response;
 };
 
-export const getPdfFile = async ({ id }) => {
+export const getPdfFile = async (id) => {
   let response = null;
-  let path = BASE_URL + "2";
+  let path = BASE_URL + id;
 
   await axios
     .get(path)

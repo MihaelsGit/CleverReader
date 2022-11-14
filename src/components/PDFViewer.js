@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { test } from "../constants/testUrls";
+
 import * as pdfjsLib from "pdfjs-dist/build/pdf";
 import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
 import { getPdfFile } from "../utils/axios";
 
-export default function PDFViewer({ name }) {
+import { test } from "../constants/testUrls";
+
+export default function PDFViewer({ fileID }) {
   const canvasRef = useRef(null);
   pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
@@ -44,17 +46,20 @@ export default function PDFViewer({ name }) {
   }, [pdfRef, currPage, renderPage]);
 
   useEffect(() => {
-    console.log("ttuuuu smooo", getPdfFile(name));
-    const loadingTask = pdfjsLib.getDocument(name); // This is a test link. It should be url as parameter
-    loadingTask.promise.then(
-      (loadedPdf) => {
-        setPdfRef(loadedPdf);
-      },
-      (reason) => {
-        console.error(reason);
-      }
-    );
-  }, [name]);
+    if (fileID !== null) {
+      getPdfFile(fileID).then((res) => {
+        const loadingTask = pdfjsLib.getDocument(test);
+        loadingTask.promise.then(
+          (loadedPdf) => {
+            setPdfRef(loadedPdf);
+          },
+          (reason) => {
+            console.error(reason);
+          }
+        );
+      });
+    }
+  }, []);
 
   const nextPage = () =>
     pdfRef && currPage < pdfRef.numPages && setCurrPage(currPage + 1);
