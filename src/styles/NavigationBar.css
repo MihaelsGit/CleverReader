@@ -1,11 +1,15 @@
 .navBar {
-    width: 100%;
-    background-color: #187795;
+  width: 100%;
+  background-color: #187795;
 }
-.navLeft{
-    float: left;
+.navLeft {
+  float: left;
 }
 
 .navRight {
-    float: right;
+  float: right;
+}
+
+.navLeftHidden {
+  visibility: hidden;
 }

@@ -16,3 +16,19 @@ export const uploadFile = async ({ data }) => {
 
   return response;
 };
+
+export const getPdfFile = async (id) => {
+  let response = null;
+  let path = BASE_URL + id;
+
+  await axios
+    .get(path)
+    .then((res) => {
+      response = res.data;
+    })
+    .catch((err) => {
+      console.log("Error while uploading => ", err);
+    });
+
+  return response;
+};

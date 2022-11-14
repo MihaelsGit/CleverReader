@@ -1,9 +1,12 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import {test} from "../constants/testUrls"
+
 import * as pdfjsLib from "pdfjs-dist/build/pdf";
 import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
+import { getPdfFile } from "../utils/axios";
 
-export default function PDFViewer({ url }) {
+import { test } from "../constants/testUrls";
+
+export default function PDFViewer({ fileID }) {
   const canvasRef = useRef(null);
   pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
@@ -14,15 +17,15 @@ export default function PDFViewer({ url }) {
     (pageNum, pdf = pdfRef) => {
       pdf &&
         pdf.getPage(pageNum).then((page) => {
-          const viewport = page.getViewport({scale: 2});
-          const canvas = document.getElementById('pdf');
+          const viewport = page.getViewport({ scale: 2 });
+          const canvas = document.getElementById("pdf");
 
           var outputScale = window.devicePixelRatio || 1;
 
           canvas.width = Math.floor(viewport.width * outputScale);
           canvas.height = Math.floor(viewport.height * outputScale);
           canvas.style.width = Math.floor(viewport.width) + "px";
-          canvas.style.height =  Math.floor(viewport.height) + "px";
+          canvas.style.height = Math.floor(viewport.height) + "px";
 
           var transform =
             outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
@@ -43,16 +46,20 @@ export default function PDFViewer({ url }) {
   }, [pdfRef, currPage, renderPage]);
 
   useEffect(() => {
-    const loadingTask = pdfjsLib.getDocument(test); // This is a test link. It should be url as parameter
-    loadingTask.promise.then(
-      (loadedPdf) => {
-        setPdfRef(loadedPdf);
-      },
-      (reason) => {
-        console.error(reason);
-      }
-    );
-  }, [url]);
+    if (fileID !== null) {
+      getPdfFile(fileID).then((res) => {
+        const loadingTask = pdfjsLib.getDocument(test);
+        loadingTask.promise.then(
+          (loadedPdf) => {
+            setPdfRef(loadedPdf);
+          },
+          (reason) => {
+            console.error(reason);
+          }
+        );
+      });
+    }
+  }, []);
 
   const nextPage = () =>
     pdfRef && currPage < pdfRef.numPages && setCurrPage(currPage + 1);
@@ -61,15 +68,15 @@ export default function PDFViewer({ url }) {
 
   return (
     <div>
-       <div>
-      <button id="prev" onClick={prevPage}>
-        Previous
-      </button>
-      <button id="next" onClick={nextPage}>
-        Next
-      </button>      
+      <canvas id="pdf" ref={canvasRef} />
+      <div>
+        <button id="prev" onClick={prevPage}>
+          Previous
+        </button>
+        <button id="next" onClick={nextPage}>
+          Next
+        </button>
       </div>
-      <canvas id="pdf" ref= {canvasRef} />
     </div>
   );
 }
