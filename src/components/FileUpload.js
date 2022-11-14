@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { uploadFile } from "../utils/axios";
 
 import SubmitButton from "./SubmitButton";
@@ -10,6 +10,11 @@ import "../styles/Link.css";
 import { Link } from "react-router-dom";
 export default function FileUpload({ setFileId }) {
   const [pdfFile, setPdf] = useState(null);
+
+  useEffect(() => {
+    setFileId("");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handlePdfSubmit = async () => {
     if (pdfFile !== null) {

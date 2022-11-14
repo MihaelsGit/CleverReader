@@ -2,9 +2,7 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 
 import * as pdfjsLib from "pdfjs-dist/build/pdf";
 import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
-import { getPdfFile } from "../utils/axios";
-
-import { test } from "../constants/testUrls";
+import { BASE_URL } from "../constants/path";
 
 export default function PDFViewer({ fileID }) {
   const canvasRef = useRef(null);
@@ -43,23 +41,22 @@ export default function PDFViewer({ fileID }) {
 
   useEffect(() => {
     renderPage(currPage, pdfRef);
-  }, [pdfRef, currPage, renderPage]);
+  }, [pdfRef, currPage, renderPage, fileID]);
 
   useEffect(() => {
     if (fileID !== null) {
-      getPdfFile(fileID).then((res) => {
-        const loadingTask = pdfjsLib.getDocument(test);
-        loadingTask.promise.then(
-          (loadedPdf) => {
-            setPdfRef(loadedPdf);
-          },
-          (reason) => {
-            console.error(reason);
-          }
-        );
-      });
+      let path = BASE_URL + fileID;
+      const loadingTask = pdfjsLib.getDocument(path);
+      loadingTask.promise.then(
+        (loadedPdf) => {
+          setPdfRef(loadedPdf);
+        },
+        (reason) => {
+          console.error(reason);
+        }
+      );
     }
-  }, []);
+  }, [fileID]);
 
   const nextPage = () =>
     pdfRef && currPage < pdfRef.numPages && setCurrPage(currPage + 1);

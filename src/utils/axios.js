@@ -21,6 +21,8 @@ export const getPdfFile = async (id) => {
   let response = null;
   let path = BASE_URL + id;
 
+  console.log("PATH => ", path);
+
   await axios
     .get(path)
     .then((res) => {
