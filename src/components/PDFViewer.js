@@ -9,47 +9,96 @@ export default function PDFViewer({ fileID }) {
   pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
   const [pdfRef, setPdfRef] = useState();
-  const [currPage, setCurrPage] = useState(1);
 
-  const renderPage = useCallback(
-    (pageNum, pdf = pdfRef) => {
-      pdf &&
-        pdf.getPage(pageNum).then((page) => {
-          const viewport = page.getViewport({ scale: 2 });
-          const canvas = document.getElementById("pdf");
+  const renderPaper = useCallback (
+    (pdf = pdfRef) => {
+      /*
 
-          var outputScale = window.devicePixelRatio || 1;
+      var container = document.getElementById("container");
 
-          canvas.width = Math.floor(viewport.width * outputScale);
-          canvas.height = Math.floor(viewport.height * outputScale);
-          canvas.style.width = Math.floor(viewport.width) + "px";
-          canvas.style.height = Math.floor(viewport.height) + "px";
+      for(var i = 1; i <= pdf.numPages; i++) {
+        pdf.getPage(i).then(function(page) {
 
-          var transform =
-            outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
+        var viewport = page.getViewport({ scale: 2 });
+        var div = document.createElement("div");
 
-          const renderContext = {
-            canvasContext: canvas.getContext("2d"),
-            transform: transform,
-            viewport: viewport,
-          };
-          page.render(renderContext);
+        div.setAttribute("id", "page-" + (page.pageNum + 1));
+        div.setAttribute("style", "position: relative");
+        container.appendChild(div);
+
+        var canvas = document.createElement("canvas");
+        div.appendChild(canvas);
+
+        var context = canvas.getContext('2d');
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        var renderContext = {
+          canvasContext: context,
+          viewport: viewport
+        };
+
+        page.render(renderContext);
         });
+      }*/
     },
     [pdfRef]
   );
 
-  useEffect(() => {
-    renderPage(currPage, pdfRef);
-  }, [pdfRef, currPage, renderPage, fileID]);
+function renderRecursively(pdf, currentPageNumber) {
+  if(currentPageNumber <= pdf.numPages) {
+    pdf.getPage(currentPageNumber).then(function(page) {
+      var container = document.getElementById("container");
+  
+      var viewport = page.getViewport({ scale: 2 });
+      var div = document.createElement("div");
+  
+      div.setAttribute("id", "page-" + (page.pageNum + 1));
+      div.setAttribute("style", "position: relative");
+      container.appendChild(div);
+  
+      var canvas = document.createElement("canvas");
+      div.appendChild(canvas);
+  
+      var outputScale = window.devicePixelRatio || 1;
+  
+      canvas.width = Math.floor(viewport.width * outputScale);
+      canvas.height = Math.floor(viewport.height * outputScale);
+      canvas.style.width = Math.floor(viewport.width) + "px";
+      canvas.style.height = Math.floor(viewport.height) + "px";
+  
+      var transform =
+      outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
+  
+      var renderContext = {
+        canvasContext: canvas.getContext("2d"),
+        transform: transform,
+        viewport: viewport
+      };
+  
+      page.render(renderContext);
+      renderRecursively(pdf, currentPageNumber + 1);
+    });
+  }
+}
+
+  /*useEffect(() => {
+    renderPaper(pdfRef);
+  }, [pdfRef, renderPaper, fileID]);*/
+
+  // The method useEffect gets called twice!
+  var counter = 0;
 
   useEffect(() => {
     if (fileID !== null) {
       let path = BASE_URL + fileID;
-      const loadingTask = pdfjsLib.getDocument(path);
+      const loadingTask = pdfjsLib.getDocument("https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf");
       loadingTask.promise.then(
         (loadedPdf) => {
-          setPdfRef(loadedPdf);
+          counter++;
+          if(counter == 1 ) return;
+          //setPdfRef(loadedPdf);
+          renderRecursively(loadedPdf, 1);
         },
         (reason) => {
           console.error(reason);
@@ -58,22 +107,8 @@ export default function PDFViewer({ fileID }) {
     }
   }, [fileID]);
 
-  const nextPage = () =>
-    pdfRef && currPage < pdfRef.numPages && setCurrPage(currPage + 1);
-
-  const prevPage = () => currPage > 1 && setCurrPage(currPage - 1);
-
   return (
-    <div>
-      <canvas id="pdf" ref={canvasRef} />
-      <div>
-        <button id="prev" onClick={prevPage}>
-          Previous
-        </button>
-        <button id="next" onClick={nextPage}>
-          Next
-        </button>
-      </div>
+    <div id="container">
     </div>
   );
 }
