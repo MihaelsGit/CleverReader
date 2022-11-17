@@ -6,8 +6,7 @@ import { useLocation } from "react-router-dom";
 
 function NavigationBar({
   onSummaryClick,
-  onKnowledgeGraphClick,
-  onSearchClick,
+  onKnowledgeGraphClick
 }) {
   const { pathname } = useLocation();
 
@@ -37,12 +36,6 @@ function NavigationBar({
               tooltipText={"Knowledge Graph"}
               iconPath={require("../styles/knowledge_graph_icon.svg").default}
               onButtonClick={onKnowledgeGraphClick}
-            />
-            <TooltipIconButton
-              id="searchButton"
-              tooltipText={"Search"}
-              iconPath={require("../styles/search_icon.svg").default}
-              onButtonClick={onSearchClick}
             />
           </div>
         </div>
