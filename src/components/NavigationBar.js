@@ -5,7 +5,6 @@ import TooltipIconButton from "./TooltipIconButton";
 import { useLocation } from "react-router-dom";
 
 function NavigationBar({
-  onBackClick,
   onSummaryClick,
   onKnowledgeGraphClick,
   onSearchClick,
@@ -22,7 +21,6 @@ function NavigationBar({
                 id="backButton"
                 tooltipText={"Back"}
                 iconPath={require("../styles/back_icon.svg").default}
-                onButtonClick={onBackClick}
               />
             </div>
           </Link>
@@ -54,7 +52,6 @@ function NavigationBar({
             id="backButton"
             tooltipText={"Back"}
             iconPath={require("../styles/back_icon.svg").default}
-            onButtonClick={onBackClick}
           />
         </div>
       )}
