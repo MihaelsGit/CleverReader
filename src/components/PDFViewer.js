@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 import * as pdfjsLib from "pdfjs-dist/build/pdf";
 import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
@@ -57,7 +57,7 @@ export default function PDFViewer({ fileID }) {
   useEffect(() => {
     if (fileID !== null) {
       let path = BASE_URL + fileID;
-      const loadingTask = pdfjsLib.getDocument("https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf");
+      const loadingTask = pdfjsLib.getDocument(path);
       loadingTask.promise.then(
         (loadedPdf) => {
           setPdfRef(loadedPdf);
