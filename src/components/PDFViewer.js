@@ -5,7 +5,6 @@ import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
 import { BASE_URL } from "../constants/path";
 
 export default function PDFViewer({ fileID }) {
-  const canvasRef = useRef(null);
   pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
   const [pdfRef, setPdfRef] = useState();
@@ -58,7 +57,7 @@ export default function PDFViewer({ fileID }) {
   useEffect(() => {
     if (fileID !== null) {
       let path = BASE_URL + fileID;
-      const loadingTask = pdfjsLib.getDocument(path);
+      const loadingTask = pdfjsLib.getDocument("https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf");
       loadingTask.promise.then(
         (loadedPdf) => {
           setPdfRef(loadedPdf);
