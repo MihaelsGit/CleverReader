@@ -35,7 +35,6 @@ export default function FileUpload({ setFileId }) {
     {
        toast.success("The pdf file have been successfully uploaded!");
     }
-    console.log("I fire some effects"); 
   }
   )
   const handlePdfSubmit = async () => {
@@ -47,6 +46,16 @@ export default function FileUpload({ setFileId }) {
       const data = new FormData();
       data.append("file", pdfFile);
       const res = await uploadFile({ data: data });
+
+      toast.promise(res, {
+      loading: 'Loading ...',
+      success: (data) => {
+        console.log(data);
+        if (data.status !== 200) throw new Error('server error');
+        return 'Pdf file uploaded successfully, preview available!';
+      },
+      error: 'Sorry, something went wrong...',
+    });
       setFileId(res);
     }
   };
