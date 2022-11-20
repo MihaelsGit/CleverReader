@@ -9,7 +9,7 @@ import {
 } from "../constants/FileDropzone";
 import { dropzoneError, dropzoneMsg } from "../constants/strings";
 
-function FileDropzone({ setPDFFile }) {
+function FileDropzone({ setPDFFile, setError }) {
   const fileType = ["application/pdf"];
 
   const [dropzoneText, setDropzoneText] = useState(dropzoneMsg);
@@ -21,10 +21,12 @@ function FileDropzone({ setPDFFile }) {
       reader.readAsDataURL(selectedFile);
       reader.onloadend = (e) => {
         setPDFFile(selectedFile);
+        setError(false);
         setDropzoneText(selectedFile.name);
       };
     } else {
       setPDFFile(null);
+      setError(true);
       setDropzoneText(dropzoneError);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
