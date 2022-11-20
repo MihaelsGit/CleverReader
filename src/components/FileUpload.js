@@ -11,8 +11,8 @@ import "../styles/error.css";
 import { useNavigate } from "react-router-dom";
 export default function FileUpload({ setFileId }) {
   const [pdfFile, setPdf] = useState(null); // Initialize with a value !=NULL pdfFile to render correctly the first time. Can be set to null after the user dop the file
-  const [uploadError, setUploadError] = useState(false);
-  const [firstRender, setFirstRender] = useState(true);
+  const [tryUpload, setTryUpload] = useState(false);
+
   const navigate = useNavigate ();
   useEffect(() => {
     setFileId("");
@@ -20,26 +20,25 @@ export default function FileUpload({ setFileId }) {
   }, []);
 
   const handlePdfSubmit = async () => {
-    if(firstRender) 
-      setFirstRender(false);
-
-    if (pdfFile !== null) {
+    if(!tryUpload) 
+      setTryUpload(true);
+    
+    if (pdfFile != null && pdfFile.type === "application/pdf") {
       navigate("/viewFile");
-      
-    const data = new FormData();
-    data.append("file", pdfFile);
-    const res = await uploadFile({ data: data });
-    setFileId(res);
+      const data = new FormData();
+      data.append("file", pdfFile);
+      const res = await uploadFile({ data: data });
+      setFileId(res);
     }
   };
 
   return (
     <div className="dropzone">
-      <FileDropzone setPDFFile={setPdf} setError = {setUploadError} />
-      { firstRender && <></>}
-      { (!firstRender && (!uploadError && pdfFile == null)) &&  <div> <p class = 'error'>No file have been uploaded. Please upload a file</p></div>}
-      { (!firstRender && (uploadError && pdfFile == null)) &&  <div>  <p class = 'error'>please upload a pdf file</p></div>}
-      {(!firstRender && (!uploadError && pdfFile !== null)) &&  <div> <p class = 'success'>The file have been uploaded successfully! </p></div>}
+      <FileDropzone setPDFFile={setPdf}/>
+      { !tryUpload && (pdfFile == null) && <></>}
+      { (tryUpload && (pdfFile == null)) &&  <div> <p class = 'error'>No file have been uploaded. Please upload a file</p></div>}
+      { ((pdfFile !== null) && (pdfFile.type !== "application/pdf")) &&  <div>  <p class = 'error'>please upload a pdf file</p></div>}
+      { ((pdfFile !== null) && (pdfFile.type === "application/pdf") && (pdfFile !== null)) &&  <div> <p class = 'success'>The file have been uploaded successfully! </p></div>}
       <SubmitButton uploadOnClick={handlePdfSubmit} />
      </div>
   )

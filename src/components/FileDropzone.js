@@ -21,14 +21,13 @@ function FileDropzone({ setPDFFile, setError }) {
       reader.readAsDataURL(selectedFile);
       reader.onloadend = (e) => {
         setPDFFile(selectedFile);
-        setError(false);
         setDropzoneText(selectedFile.name);
       };
     } else {
       setPDFFile(null);
-      setError(true);
       setDropzoneText(dropzoneError);
     }
+    setPDFFile(selectedFile);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
