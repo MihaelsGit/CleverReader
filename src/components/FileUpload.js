@@ -32,43 +32,15 @@ export default function FileUpload({ setFileId }) {
     setFileId(res);
     }
   };
-  if (firstRender) {
-    return (
+
+  return (
     <div className="dropzone">
       <FileDropzone setPDFFile={setPdf} setError = {setUploadError} />
+      { firstRender && <></>}
+      { (!firstRender && (!uploadError && pdfFile == null)) &&  <div> <p class = 'error'>No file have been uploaded. Please upload a file</p></div>}
+      { (!firstRender && (uploadError && pdfFile == null)) &&  <div>  <p class = 'error'>please upload a pdf file</p></div>}
+      {(!firstRender && (!uploadError && pdfFile !== null)) &&  <div> <p class = 'success'>The file have been uploaded successfully! </p></div>}
       <SubmitButton uploadOnClick={handlePdfSubmit} />
-    </div>
-    )
-  } else if(!uploadError && pdfFile == null) {
-    console.log("no file uploaded");
-    return(
-      <div className="dropzone">
-       <FileDropzone setPDFFile={setPdf} setError = {setUploadError} />
-      <div>
-        <p class = 'error'>No file have been uploaded. Please upload a file</p>
-      </div>
-      <SubmitButton uploadOnClick={handlePdfSubmit} />
-    </div>
-    )
-  } else if(uploadError && pdfFile == null){
-    return(
-      <div className="dropzone">
-       <FileDropzone setPDFFile={setPdf} setError = {setUploadError} />
-      <div>
-        <p class = 'error'>please upload a pdf file</p>
-      </div>
-      <SubmitButton uploadOnClick={handlePdfSubmit} />
-    </div>
-    )
-  }else {
-    return(
-      <div className="dropzone">
-       <FileDropzone setPDFFile={setPdf} setError = {setUploadError} />
-      <div>
-        <p class = 'success'>The file have been uploaded successfully! </p>
-      </div>
-      <SubmitButton uploadOnClick={handlePdfSubmit} />
-    </div>
-    )
-  }
+     </div>
+  )
 }
