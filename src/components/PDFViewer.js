@@ -1,47 +1,58 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 import * as pdfjsLib from "pdfjs-dist/build/pdf";
 import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
 import { BASE_URL } from "../constants/path";
 
 export default function PDFViewer({ fileID }) {
-  const canvasRef = useRef(null);
   pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
   const [pdfRef, setPdfRef] = useState();
-  const [currPage, setCurrPage] = useState(1);
 
-  const renderPage = useCallback(
-    (pageNum, pdf = pdfRef) => {
-      pdf &&
-        pdf.getPage(pageNum).then((page) => {
+  const renderPaper = useCallback (
+    (pdf = pdfRef, currentPageNumber ) => {
+      if(pdf == null) return
+      if(currentPageNumber <= pdf.numPages) {
+        pdf.getPage(currentPageNumber).then(function(page) {
+          const container = document.getElementById("container");
+      
           const viewport = page.getViewport({ scale: 2 });
-          const canvas = document.getElementById("pdf");
-
-          var outputScale = window.devicePixelRatio || 1;
-
+          const div = document.createElement("div");
+      
+          div.setAttribute("id", "page-" + (page.pageNum + 1));
+          div.setAttribute("style", "position: relative");
+          container.appendChild(div);
+      
+          const canvas = document.createElement("canvas");
+          div.appendChild(canvas);
+      
+          const outputScale = window.devicePixelRatio || 1;
+      
           canvas.width = Math.floor(viewport.width * outputScale);
           canvas.height = Math.floor(viewport.height * outputScale);
           canvas.style.width = Math.floor(viewport.width) + "px";
           canvas.style.height = Math.floor(viewport.height) + "px";
-
-          var transform =
-            outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
-
+      
+          const transform =
+          outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
+      
           const renderContext = {
             canvasContext: canvas.getContext("2d"),
             transform: transform,
-            viewport: viewport,
+            viewport: viewport
           };
+      
           page.render(renderContext);
+          renderPaper(pdf, currentPageNumber + 1);
         });
+      }
     },
     [pdfRef]
   );
 
   useEffect(() => {
-    renderPage(currPage, pdfRef);
-  }, [pdfRef, currPage, renderPage, fileID]);
+    renderPaper(pdfRef, 1);
+  }, [pdfRef, renderPaper, fileID]);
 
   useEffect(() => {
     if (fileID !== null) {
@@ -58,22 +69,8 @@ export default function PDFViewer({ fileID }) {
     }
   }, [fileID]);
 
-  const nextPage = () =>
-    pdfRef && currPage < pdfRef.numPages && setCurrPage(currPage + 1);
-
-  const prevPage = () => currPage > 1 && setCurrPage(currPage - 1);
-
   return (
-    <div>
-      <canvas id="pdf" ref={canvasRef} />
-      <div>
-        <button id="prev" onClick={prevPage}>
-          Previous
-        </button>
-        <button id="next" onClick={nextPage}>
-          Next
-        </button>
-      </div>
+    <div id="container">
     </div>
   );
 }
