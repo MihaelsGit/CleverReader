@@ -9,7 +9,7 @@ import {
 } from "../constants/FileDropzone";
 import { dropzoneError, dropzoneMsg } from "../constants/strings";
 
-function FileDropzone({ setPDFFile }) {
+function FileDropzone({ setPDFFile, setError }) {
   const fileType = ["application/pdf"];
 
   const [dropzoneText, setDropzoneText] = useState(dropzoneMsg);
@@ -27,6 +27,7 @@ function FileDropzone({ setPDFFile }) {
       setPDFFile(null);
       setDropzoneText(dropzoneError);
     }
+    setPDFFile(selectedFile);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
