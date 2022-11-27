@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
 
 export default function FileUpload({ setFileId }) {
-  const [pdfFile, setPdf] = useState(null); // Initialize with a value !=NULL pdfFile to render correctly the first time. Can be set to null after the user dop the file
+  const [pdfFile, setPdf] = useState(null); 
   const [tryUpload, setTryUpload] = useState(false);
 
   const navigate = useNavigate ();
