@@ -33,7 +33,7 @@ export default function FileUpload({ setFileId }) {
     if (pdfFile !== null && pdfFile.type === "application/pdf") {
       toast.success("The pdf file have been successfully uploaded!");
     }
-  }, []);
+  }, [pdfFile, tryUpload]);
 
   const handlePdfSubmit = async () => {
     if (!tryUpload) setTryUpload(true);
