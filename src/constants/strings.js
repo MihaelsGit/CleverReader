@@ -7,3 +7,7 @@ export const dropzoneError =
   "Something went wrong with upload, please try again";
 
 export const summaryTitle = "Summary";
+
+export const copyToClipboard = "Copy to clipboard"
+
+export const copied = "Copied!"
