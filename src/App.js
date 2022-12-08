@@ -11,7 +11,7 @@ import { projectName } from "./constants/strings";
 function App() {
   const [fileID, setFileID] = useState("");
   const [summaryModalShow, setSummaryModalShow] = useState(false);
- 
+    
   return (
     <div className="wrapper">
       <BrowserRouter>

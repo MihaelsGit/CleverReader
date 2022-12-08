@@ -1,9 +1,36 @@
 import Modal from 'react-bootstrap/Modal';
-import { summaryTitle } from '../constants/strings';
+import React, { useState } from "react";
+import { summaryTitle, copyToClipboard, copied } from '../constants/strings';
 import TooltipIconButton from "./TooltipIconButton";
 import "../styles/App.css";
 
 function SummaryModal({ summaryText, summaryModalShow, summaryModalHide }) {
+  const [isCopied, setIsCopied] = useState(false);
+  const [tooltipText, setTooltipText] = useState(copyToClipboard)
+
+  const copyTextToClipboard = async (text) => {
+    if ('clipboard' in navigator) {
+        return await navigator.clipboard.writeText(text);
+      } else {
+        return document.execCommand('copy', true, text);
+      }
+  };
+
+  const onCopyClick = () => {
+    copyTextToClipboard(summaryText)
+      .then(() => {
+        setIsCopied(true);
+        setTooltipText(copied);
+        setTimeout(() => {
+          setIsCopied(false);
+          setTooltipText(copyToClipboard);
+        }, 1500);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   return (
     <Modal
       size="lg"
@@ -19,8 +46,10 @@ function SummaryModal({ summaryText, summaryModalShow, summaryModalHide }) {
         />
         <TooltipIconButton
           id="copyButton"
-          tooltipText={"Copy to clipboard"}
+          tooltipText={tooltipText}
           iconPath={require("../styles/copy_icon.svg").default}
+          onButtonClick={onCopyClick}
+          tooltipPlacement="auto"
         />
       </Modal.Header>
       <Modal.Body>
