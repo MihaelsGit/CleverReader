@@ -14,7 +14,7 @@ import toast, { Toaster } from "react-hot-toast";
 export default function FileUpload({ setFileId }) {
   const [pdfFile, setPdf] = useState(null);
   const [tryUpload, setTryUpload] = useState(false);
-
+  const [attempts, setAttempts] = useState(0);
   const navigate = useNavigate();
   useEffect(() => {
     setFileId("");
@@ -22,39 +22,35 @@ export default function FileUpload({ setFileId }) {
   }, []);
 
   useEffect(() => {
-    if (tryUpload && pdfFile == null) {
-      toast.error("No file have been uploaded. Please upload a file");
+      console.log(tryUpload);
+    if (tryUpload && pdfFile === null) {
+      toast.error("No file have been uploaded. Please upload a file", {
+      id: "toast"});
     }
 
     if (pdfFile !== null && pdfFile.type !== "application/pdf") {
-      toast.error("please upload a pdf file");
+      toast.error("please upload a pdf file", {
+      id: "toast"});  
     }
 
-    if (pdfFile !== null && pdfFile.type === "application/pdf") {
-      toast.success("The pdf file have been successfully uploaded!");
+    if (pdfFile !== null && pdfFile.type === "application/pdf") { 
+      toast.success("The pdf file have been successfully uploaded!",{
+      id: "toast"});
     }
-  }, [pdfFile, tryUpload]);
+  }, [pdfFile, tryUpload, attempts]);
 
   const handlePdfSubmit = async () => {
+    setAttempts(attempts + 1);
     if (!tryUpload) setTryUpload(true);
-    toast.error("No file have been uploaded. Please upload a file");
     if (pdfFile != null && pdfFile.type === "application/pdf") {
+      setTryUpload(false);
+      toast.dismiss();
       navigate("/viewFile");
       const data = new FormData();
       data.append("file", pdfFile);
       const res = await uploadFile({ data: data });
 
       setFileId(res);
-
-      toast.promise(res, {
-        loading: "Loading ...",
-        success: (data) => {
-          console.log(data);
-          if (data.status !== 200) throw new Error("server error");
-          return "Pdf file uploaded successfully, preview available!";
-        },
-        error: "Sorry, something went wrong...",
-      });
     }
   };
 
