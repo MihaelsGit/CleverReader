@@ -4,12 +4,12 @@ import "../styles/App.css";
 
 import NavigationBar from "./NavigationBar";
 
-function CustomHeader({ text }) {
+function CustomHeader({ text, setSummaryModalShow } ) {
   return (
     <>
       <div className="header">
         {text}
-        <NavigationBar />
+        <NavigationBar onSummaryClick={() => setSummaryModalShow(true)}/>
       </div>
     </>
   );
