@@ -38,3 +38,10 @@ body {
   width: 75%;
   margin-top: 8%;
 }
+
+.modalTitle {
+  color: #313131;
+  font-size: 30px;
+  font-weight: bold;
+  user-select: none;
+}
