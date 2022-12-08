@@ -18,6 +18,7 @@ body {
   width: 100%;
   padding: 20px;
   text-align: center;
+  user-select: none;
   background: #187795;
   color: white;
   font-size: 30px;
