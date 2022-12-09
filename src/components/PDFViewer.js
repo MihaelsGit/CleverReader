@@ -7,7 +7,6 @@ import LoadingAnimation from "./LoadingAnimation"
 export default function PDFViewer({ fileID }) {
   const [pdfURL, setPdfURL] = useState("");
   const [loading, setLoading] = useState(true);
-  var Spinner = require('react-spinkit');
 
   useEffect(() => {
     let path = BASE_URL + fileID;
@@ -34,7 +33,7 @@ export default function PDFViewer({ fileID }) {
         
       ) : null}
       
-    /*<iframe className="iframe" title="pdfViewer" src={pdfURL} onLoad={hideSpinner} />
+    <iframe className="iframe" title="pdfViewer" src={pdfURL} onLoad={hideSpinner} />
     </div>
   );
 }
