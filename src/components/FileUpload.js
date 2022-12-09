@@ -13,8 +13,6 @@ import toast, { Toaster } from "react-hot-toast";
 
 export default function FileUpload({ setFileId }) {
   const [pdfFile, setPdf] = useState(null);
-  const [tryUpload, setTryUpload] = useState(false);
-  const [attempts, setAttempts] = useState(0);
   const navigate = useNavigate();
   useEffect(() => {
     setFileId("");
@@ -22,43 +20,32 @@ export default function FileUpload({ setFileId }) {
   }, []);
 
   useEffect(() => {
-      console.log(tryUpload);
-    if (tryUpload && pdfFile === null) {
-      toast.error("No file have been uploaded. Please upload a file", {
-      id: "toast"});
-    }
-
     if (pdfFile !== null && pdfFile.type !== "application/pdf") {
       toast.error("please upload a pdf file", {
       id: "toast"});  
     }
+  }, [pdfFile]);
 
-    if (pdfFile !== null && pdfFile.type === "application/pdf") { 
-      toast.success("The pdf file have been successfully uploaded!",{
-      id: "toast"});
-    }
-  }, [pdfFile, tryUpload, attempts]);
+  useEffect(() => {
+    const submit = async () => {
+      if (pdfFile != null && pdfFile.type === "application/pdf") {        
+        toast.dismiss();
+        navigate("/viewFile");
+        const data = new FormData();
+        data.append("file", pdfFile);
+        const res = await uploadFile({ data: data });
 
-  const handlePdfSubmit = async () => {
-    setAttempts(attempts + 1);
-    if (!tryUpload) setTryUpload(true);
-    if (pdfFile != null && pdfFile.type === "application/pdf") {
-      setTryUpload(false);
-      toast.dismiss();
-      navigate("/viewFile");
-      const data = new FormData();
-      data.append("file", pdfFile);
-      const res = await uploadFile({ data: data });
+        setFileId(res);
+      }
+    };
 
-      setFileId(res);
-    }
-  };
+    submit();
+  }, [pdfFile, navigate, setFileId]);
 
   return (
     <div className="dropzone">
       <Toaster />
       <FileDropzone setPDFFile={setPdf} />
-      <SubmitButton uploadOnClick={handlePdfSubmit} />
     </div>
   );
 }
