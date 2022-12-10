@@ -11,3 +11,7 @@ export const summaryTitle = "Summary";
 export const copyToClipboard = "Copy to clipboard"
 
 export const copied = "Copied!"
+
+export const close = "Close"
+
+export const knowledgeGraphTitle = "Knowledge Graph"
