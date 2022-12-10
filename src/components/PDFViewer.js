@@ -13,34 +13,20 @@ export default function PDFViewer({ fileID }) {
     setPdfURL(path);
   }, [fileID]);
 
-  const hideSpinner = () => {
+  const hideLoadingAnimation = () => {
     setLoading(false);
     };
-
-  const loadingStyle = {
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: '100vh',
-          }
 
   return (
     <div className="container">
       {loading ? (
-        <div style={loadingStyle}>
+        <div className = "loading">
             <LoadingAnimation />
         </div>
         
       ) : null}
       
-    <iframe className="iframe" title="pdfViewer" src={pdfURL} onLoad={hideSpinner} />
+    <iframe className="iframe" title="pdfViewer" src={pdfURL} onLoad={hideLoadingAnimation} />
     </div>
   );
 }
-
-/*style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: '100vh',
-          }}*/
