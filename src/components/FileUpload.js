@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { uploadFile } from "../utils/axios";
 
-
+import SubmitButton from "./SubmitButton"; //eslint-disable-line
 import FileDropzone from "./FileDropzone";
 
 import "../styles/FileUpload.css";
