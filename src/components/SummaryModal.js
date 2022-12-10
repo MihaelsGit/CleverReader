@@ -1,6 +1,6 @@
 import Modal from 'react-bootstrap/Modal';
 import React, { useState } from "react";
-import { summaryTitle, copyToClipboard, copied } from '../constants/strings';
+import { summaryTitle, copyToClipboard, copied, close } from '../constants/strings';
 import TooltipIconButton from "./TooltipIconButton";
 import "../styles/App.css";
 
@@ -40,7 +40,7 @@ function SummaryModal({ summaryText, summaryModalShow, summaryModalHide }) {
       <Modal.Header>
         <TooltipIconButton
           id="closeButton"
-          tooltipText={"Close"}
+          tooltipText={close}
           iconPath={require("../styles/close_icon.svg").default}
           onButtonClick={summaryModalHide}
         />
