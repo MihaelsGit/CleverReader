@@ -10,9 +10,12 @@ import { projectName } from "./constants/strings";
 
 function App() {
   const [fileID, setFileID] = useState("");
-  const [summaryModalShow, setSummaryModalShow] = useState(false);
-  const [knowledgeGraphModalShow, setKnowledgeGraphModalShow] = useState(false);   
 
+  const [summaryModalShow, setSummaryModalShow] = useState(false);
+  const [summaryText, setSummaryText] = useState("");
+  
+  const [knowledgeGraphModalShow, setKnowledgeGraphModalShow] = useState(false);   
+  const [knowledgeGraph, setKnowledgeGraph] = useState("");
 
   return (
     <div className="wrapper">
@@ -23,18 +26,25 @@ function App() {
           setKnowledgeGraphShow={setKnowledgeGraphModalShow}
         />
         <Routes>
-          <Route path="/" element={<FileUpload setFileId={setFileID} />} />
+          <Route 
+            path="/" 
+            element={
+              <FileUpload 
+                setFileId={setFileID} 
+                setSummaryText={setSummaryText}
+                setKnowledgeGraph={setKnowledgeGraph}
+              />
+            } 
+          />
           <Route path="/viewFile" element={<PDFViewer fileID={fileID} />} />
         </Routes>
         <SummaryModal 
-          summaryText="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
-            aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." 
+          summaryText={summaryText}
           summaryModalShow={summaryModalShow} 
           summaryModalHide={() => setSummaryModalShow(false)}
         />
         <KnowledgeGraphModal
+          knowledgeGraph={knowledgeGraph}
           knowledgeGraphModalShow={knowledgeGraphModalShow} 
           knowledgeGraphModalHide={() => setKnowledgeGraphModalShow(false)}
         />

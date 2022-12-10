@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { uploadFile } from "../utils/axios";
+import { uploadFile, getSummaryText, getKnowledgeGraph } from "../utils/axios";
 
 import SubmitButton from "./SubmitButton";
 import FileDropzone from "./FileDropzone";
@@ -11,7 +11,7 @@ import "../styles/error.css";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 
-export default function FileUpload({ setFileId }) {
+export default function FileUpload({ setFileId, setSummaryText, setKnowledgeGraph }) {
   const [pdfFile, setPdf] = useState(null);
   const [tryUpload, setTryUpload] = useState(false);
 
@@ -45,6 +45,12 @@ export default function FileUpload({ setFileId }) {
       const res = await uploadFile({ data: data });
 
       setFileId(res);
+
+      const summaryRes = await getSummaryText({pdfId: res});
+      setSummaryText(summaryRes);
+
+      const knowledgeGraphRes = await getKnowledgeGraph({pdfId: res});
+      setKnowledgeGraph(knowledgeGraphRes);
 
       toast.promise(res, {
         loading: "Loading ...",
