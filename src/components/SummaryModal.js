@@ -1,11 +1,10 @@
 import Modal from 'react-bootstrap/Modal';
 import React, { useState } from "react";
-import { summaryTitle, copyToClipboard, copied, close } from '../constants/strings';
+import { summaryTitle, copyToClipboard, copied, copyError, close } from '../constants/strings';
 import TooltipIconButton from "./TooltipIconButton";
 import "../styles/App.css";
 
 function SummaryModal({ summaryText, summaryModalShow, summaryModalHide }) {
-  const [isCopied, setIsCopied] = useState(false);
   const [tooltipText, setTooltipText] = useState(copyToClipboard)
 
   const copyTextToClipboard = async (text) => {
@@ -19,15 +18,16 @@ function SummaryModal({ summaryText, summaryModalShow, summaryModalHide }) {
   const onCopyClick = () => {
     copyTextToClipboard(summaryText)
       .then(() => {
-        setIsCopied(true);
         setTooltipText(copied);
-        setTimeout(() => {
-          setIsCopied(false);
-          setTooltipText(copyToClipboard);
-        }, 1500);
       })
       .catch((err) => {
         console.log(err);
+        setTooltipText(copyError);
+      })
+      .then(() => {
+        setTimeout(() => {
+          setTooltipText(copyToClipboard);
+        }, 1500);
       });
   }
 
