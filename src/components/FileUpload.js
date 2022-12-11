@@ -29,12 +29,17 @@ export default function FileUpload({ setFileId }) {
     const submit = async () => {
       if (pdfFile != null && pdfFile.type === "application/pdf") {        
         toast.dismiss();
-        navigate("/viewFile");
         const data = new FormData();
         data.append("file", pdfFile);
         const res = await uploadFile({ data: data });
 
-        setFileId(res);
+        if(res == null) {
+          toast.error("Error! Couldn't upload the pdf file.", {
+            id: "toast"})
+        } else {
+          navigate("/viewFile");
+          setFileId(res);
+        }
       }
     };
 
