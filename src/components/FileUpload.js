@@ -50,7 +50,7 @@ export default function FileUpload({ setFileId, setSummaryText, setKnowledgeGrap
     };
 
     submit();
-  }, [pdfFile, navigate, setFileId]);
+  }, [pdfFile, navigate, setFileId, setSummaryText, setKnowledgeGraph]);
 
   return (
     <div className="dropzone">
