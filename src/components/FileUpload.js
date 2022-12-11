@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { uploadFile, getSummaryText, getKnowledgeGraph } from "../utils/axios";
 
-import SubmitButton from "./SubmitButton";
+import "../styles/Button.css"
 import FileDropzone from "./FileDropzone";
 
 import "../styles/FileUpload.css";
-import "../styles/Link.css";
 import "../styles/error.css";
 
 import { useNavigate } from "react-router-dom";
@@ -13,8 +12,6 @@ import toast, { Toaster } from "react-hot-toast";
 
 export default function FileUpload({ setFileId, setSummaryText, setKnowledgeGraph }) {
   const [pdfFile, setPdf] = useState(null);
-  const [tryUpload, setTryUpload] = useState(false);
-
   const navigate = useNavigate();
   useEffect(() => {
     setFileId("");
@@ -22,53 +19,43 @@ export default function FileUpload({ setFileId, setSummaryText, setKnowledgeGrap
   }, []);
 
   useEffect(() => {
-    if (tryUpload && pdfFile == null) {
-      toast.error("No file have been uploaded. Please upload a file");
-    }
-
     if (pdfFile !== null && pdfFile.type !== "application/pdf") {
-      toast.error("please upload a pdf file");
+      toast.error("please upload a pdf file", {
+      id: "toast"});  
     }
+  }, [pdfFile]);
 
-    if (pdfFile !== null && pdfFile.type === "application/pdf") {
-      toast.success("The pdf file have been successfully uploaded!");
-    }
-  }, [pdfFile, tryUpload]);
+  useEffect(() => {
+    const submit = async () => {
+      if (pdfFile != null && pdfFile.type === "application/pdf") {        
+        toast.dismiss();
+        const data = new FormData();
+        data.append("file", pdfFile);
+        const res = await uploadFile({ data: data });
 
-  const handlePdfSubmit = async () => {
-    if (!tryUpload) setTryUpload(true);
-    toast.error("No file have been uploaded. Please upload a file");
-    if (pdfFile != null && pdfFile.type === "application/pdf") {
-      navigate("/viewFile");
-      const data = new FormData();
-      data.append("file", pdfFile);
-      const res = await uploadFile({ data: data });
+        if(res == null) {
+          toast.error("Error! Couldn't upload the pdf file.", {
+            id: "toast"})
+        } else {
+          const summaryRes = await getSummaryText({pdfId: res});
+          setSummaryText(summaryRes);
 
-      setFileId(res);
+          const knowledgeGraphRes = await getKnowledgeGraph({pdfId: res});
+          setKnowledgeGraph(knowledgeGraphRes);
+          
+          navigate("/viewFile");
+          setFileId(res);
+        }
+      }
+    };
 
-      const summaryRes = await getSummaryText({pdfId: res});
-      setSummaryText(summaryRes);
-
-      const knowledgeGraphRes = await getKnowledgeGraph({pdfId: res});
-      setKnowledgeGraph(knowledgeGraphRes);
-
-      toast.promise(res, {
-        loading: "Loading ...",
-        success: (data) => {
-          console.log(data);
-          if (data.status !== 200) throw new Error("server error");
-          return "Pdf file uploaded successfully, preview available!";
-        },
-        error: "Sorry, something went wrong...",
-      });
-    }
-  };
+    submit();
+  }, [pdfFile, navigate, setFileId]);
 
   return (
     <div className="dropzone">
       <Toaster />
       <FileDropzone setPDFFile={setPdf} />
-      <SubmitButton uploadOnClick={handlePdfSubmit} />
     </div>
   );
 }
