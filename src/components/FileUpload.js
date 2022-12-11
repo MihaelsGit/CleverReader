@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { uploadFile } from "../utils/axios";
 
-import SubmitButton from "./SubmitButton"; //eslint-disable-line
+import "../styles/Button.css"
 import FileDropzone from "./FileDropzone";
 
 import "../styles/FileUpload.css";
-import "../styles/Link.css";
 import "../styles/error.css";
 
 import { useNavigate } from "react-router-dom";
