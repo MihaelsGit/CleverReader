@@ -5,8 +5,7 @@ import TooltipIconButton from "./TooltipIconButton";
 import { useLocation } from "react-router-dom";
 
 function NavigationBar({
-  onSummaryClick,
-  onKnowledgeGraphClick
+  onSummaryClick
 }) {
   const { pathname } = useLocation();
 
@@ -31,12 +30,13 @@ function NavigationBar({
               iconPath={require("../styles/summary_icon.svg").default}
               onButtonClick={onSummaryClick}
             />
-            <TooltipIconButton
-              id="knowledgeGraphButton"
-              tooltipText={"Knowledge Graph"}
-              iconPath={require("../styles/knowledge_graph_icon.svg").default}
-              onButtonClick={onKnowledgeGraphClick}
-            />
+            <Link to="/knowledgeGraph" target="_blank">
+              <TooltipIconButton
+                id="knowledgeGraphButton"
+                tooltipText={"Knowledge Graph"}
+                iconPath={require("../styles/knowledge_graph_icon.svg").default}
+              />
+            </Link>
           </div>
         </div>
       ) : (
@@ -46,8 +46,7 @@ function NavigationBar({
             tooltipText={"Back"}
             iconPath={require("../styles/back_icon.svg").default}
           />
-        </div>
-      )}
+        </div>)}
     </nav>
   );
 }

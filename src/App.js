@@ -7,6 +7,7 @@ import PDFViewer from "./components/PDFViewer";
 import LoadingAnimation from "./components/LoadingAnimation"
 
 import { projectName } from "./constants/strings";
+import KnowledgeGraph from "./components/KnowledgeGraph";
 
 function App() {
   const [fileID, setFileID] = useState("");
@@ -24,6 +25,7 @@ function App() {
         <Routes>
           <Route path="/" element={<FileUpload setFileId={setFileID} setLoading={setLoading} />} />
           <Route path="/viewFile" element={<PDFViewer fileID={fileID} setLoading={setLoading} />} />
+          <Route exact path="/knowledgeGraph" element={<KnowledgeGraph />} />
         </Routes>
       </BrowserRouter>
     </div>
