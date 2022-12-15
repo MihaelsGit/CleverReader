@@ -13,3 +13,10 @@
 .navLeftHidden {
   visibility: hidden;
 }
+
+.spinner {
+  color: white;
+  margin-left: 16px;
+  margin-right: 16px;
+  user-select: none;
+}
