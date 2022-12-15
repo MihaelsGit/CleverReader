@@ -55,12 +55,6 @@ function App() {
               />
             }
           />
-        <CustomHeader text={projectName} />
-        {loading ? (
-          <div className="loading">
-            <LoadingAnimation />
-          </div>
-        ) : null}
         </Routes>
         <SummaryModal 
           summaryText={summaryText}
