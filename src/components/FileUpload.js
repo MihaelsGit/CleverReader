@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { uploadFile, getSummaryText, getKnowledgeGraph } from "../utils/axios";
+import { uploadFile } from "../utils/axios";
 
 import "../styles/Button.css"
 import FileDropzone from "./FileDropzone";
@@ -10,7 +10,7 @@ import "../styles/error.css";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 
-export default function FileUpload({ setFileId, setLoading, setSummaryText, setKnowledgeGraph  }) {
+export default function FileUpload({ setFileId, setLoading }) {
   const [pdfFile, setPdf] = useState(null);
   const navigate = useNavigate();
   useEffect(() => {
@@ -39,12 +39,6 @@ export default function FileUpload({ setFileId, setLoading, setSummaryText, setK
             id: "toast"});
           setLoading(false);  
         } else {
-          const summaryRes = await getSummaryText({pdfId: res});
-          setSummaryText(summaryRes);
-
-          const knowledgeGraphRes = await getKnowledgeGraph({pdfId: res});
-          setKnowledgeGraph(knowledgeGraphRes);
-          
           navigate("/viewFile");
           setFileId(res);
         }
@@ -52,7 +46,7 @@ export default function FileUpload({ setFileId, setLoading, setSummaryText, setK
     };
 
     submit();
-  }, [pdfFile, navigate, setFileId, setLoading, setSummaryText, setKnowledgeGraph]);
+  }, [pdfFile, navigate, setFileId, setLoading]);
 
   return (
     <div className="dropzone">

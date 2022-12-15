@@ -27,6 +27,7 @@ function App() {
         <CustomHeader 
           text={projectName} 
           setSummaryModalShow={setSummaryModalShow}
+          setSummaryText={setSummaryText}
           setKnowledgeGraphShow={setKnowledgeGraphModalShow}
         />
         {loading ? (
@@ -40,7 +41,6 @@ function App() {
             element={
               <FileUpload 
                 setFileId={setFileID} 
-                setSummaryText={setSummaryText}
                 setKnowledgeGraph={setKnowledgeGraph}
                 setLoading={setLoading}
               />
