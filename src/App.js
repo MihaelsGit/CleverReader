@@ -6,6 +6,8 @@ import FileUpload from "./components/FileUpload";
 import PDFViewer from "./components/PDFViewer";
 import SummaryModal from "./components/SummaryModal";
 import KnowledgeGraphModal from "./components/KnowledgeGraphModal";
+import LoadingAnimation from "./components/LoadingAnimation"
+
 import { projectName } from "./constants/strings";
 
 function App() {
@@ -16,6 +18,8 @@ function App() {
   
   const [knowledgeGraphModalShow, setKnowledgeGraphModalShow] = useState(false);   
   const [knowledgeGraph, setKnowledgeGraph] = useState("");
+  
+  const [loading, setLoading] = useState(false);
 
   return (
     <div className="wrapper">
@@ -25,6 +29,11 @@ function App() {
           setSummaryModalShow={setSummaryModalShow}
           setKnowledgeGraphShow={setKnowledgeGraphModalShow}
         />
+        {loading ? (
+          <div className="loading">
+            <LoadingAnimation />
+          </div>
+        ) : null}
         <Routes>
           <Route 
             path="/" 
@@ -33,10 +42,25 @@ function App() {
                 setFileId={setFileID} 
                 setSummaryText={setSummaryText}
                 setKnowledgeGraph={setKnowledgeGraph}
+                setLoading={setLoading}
               />
             } 
           />
-          <Route path="/viewFile" element={<PDFViewer fileID={fileID} />} />
+          <Route
+            path="/viewFile"
+            element={
+              <PDFViewer 
+                fileID={fileID} 
+                setLoading={setLoading} 
+              />
+            }
+          />
+        <CustomHeader text={projectName} />
+        {loading ? (
+          <div className="loading">
+            <LoadingAnimation />
+          </div>
+        ) : null}
         </Routes>
         <SummaryModal 
           summaryText={summaryText}

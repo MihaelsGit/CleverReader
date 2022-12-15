@@ -39,6 +39,18 @@ body {
   margin-top: 8%;
 }
 
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5%;
+  min-height: 100vh;
+  height: 100%;
+  width: 100%;
+  background-color: white;
+  position: absolute;
+}
+
 .modalTitle {
   color: #313131;
   font-size: 30px;

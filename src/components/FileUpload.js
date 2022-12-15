@@ -10,7 +10,7 @@ import "../styles/error.css";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 
-export default function FileUpload({ setFileId, setSummaryText, setKnowledgeGraph }) {
+export default function FileUpload({ setFileId, setLoading, setSummaryText, setKnowledgeGraph  }) {
   const [pdfFile, setPdf] = useState(null);
   const navigate = useNavigate();
   useEffect(() => {
@@ -31,11 +31,13 @@ export default function FileUpload({ setFileId, setSummaryText, setKnowledgeGrap
         toast.dismiss();
         const data = new FormData();
         data.append("file", pdfFile);
+        setLoading(true);
         const res = await uploadFile({ data: data });
 
         if(res == null) {
           toast.error("Error! Couldn't upload the pdf file.", {
-            id: "toast"})
+            id: "toast"});
+          setLoading(false);  
         } else {
           const summaryRes = await getSummaryText({pdfId: res});
           setSummaryText(summaryRes);
@@ -50,7 +52,7 @@ export default function FileUpload({ setFileId, setSummaryText, setKnowledgeGrap
     };
 
     submit();
-  }, [pdfFile, navigate, setFileId, setSummaryText, setKnowledgeGraph]);
+  }, [pdfFile, navigate, setFileId, setLoading, setSummaryText, setKnowledgeGraph]);
 
   return (
     <div className="dropzone">
