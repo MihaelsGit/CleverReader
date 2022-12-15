@@ -5,7 +5,7 @@ import TooltipIconButton from "./TooltipIconButton";
 import "../styles/App.css";
 
 function SummaryModal({ summaryText, summaryModalShow, summaryModalHide }) {
-  const [tooltipText, setTooltipText] = useState(copyToClipboard)
+  const [tooltipText, setTooltipText] = useState(copyToClipboard);
 
   const copyTextToClipboard = async (text) => {
     if ('clipboard' in navigator) {
