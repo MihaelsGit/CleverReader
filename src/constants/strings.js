@@ -19,3 +19,5 @@ export const copyError = "Error! Text not copied."
 export const close = "Close"
 
 export const knowledgeGraphTitle = "Knowledge Graph"
+
+export const knowledgeGraphError = "Error! Couldn't get knowledge graph."
