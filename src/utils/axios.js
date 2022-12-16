@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL, UPLOAD_URL } from "../constants/path";
+import { BASE_URL, UPLOAD_URL, SUMMARY_URL, KNOWLEDGE_GRAPH_URL } from "../constants/path";
 
 export const uploadFile = async ({ data }) => {
   let response = null;
@@ -17,11 +17,9 @@ export const uploadFile = async ({ data }) => {
   return response;
 };
 
-export const getPdfFile = async (id) => {
+export const getSummaryText = async ({ pdfId }) => {
   let response = null;
-  let path = BASE_URL + id;
-
-  console.log("PATH => ", path);
+  let path = BASE_URL + SUMMARY_URL + pdfId;
 
   await axios
     .get(path)
@@ -29,7 +27,24 @@ export const getPdfFile = async (id) => {
       response = res.data;
     })
     .catch((err) => {
-      console.log("Error while uploading => ", err);
+      console.log("Error while fetching summary => ", err);
+      response = "Sorry about that, we couldn't get you the summary right now :(";
+    });
+
+  return response;
+};
+
+export const getKnowledgeGraph = async ({ pdfId }) => {
+  let response = null;
+  let path = BASE_URL + KNOWLEDGE_GRAPH_URL + pdfId;
+
+  await axios
+    .get(path)
+    .then((res) => {
+      response = res.data;
+    })
+    .catch((err) => {
+      console.log("Error while fetching knowledge graph => ", err);
     });
 
   return response;

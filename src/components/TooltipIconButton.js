@@ -2,7 +2,7 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-function TooltipIconButton({ tooltipText, iconPath, onButtonClick }) {
+function TooltipIconButton({ tooltipText, iconPath, onButtonClick, tooltipPlacement="bottom" }) {
   const renderTooltip = (props) => (
     <Tooltip id="button-tooltip" {...props}>
       {tooltipText}
@@ -11,7 +11,7 @@ function TooltipIconButton({ tooltipText, iconPath, onButtonClick }) {
 
   return (
     <OverlayTrigger
-      placement="bottom"
+      placement={tooltipPlacement}
       delay={{ show: 100, hide: 100 }}
       overlay={renderTooltip}
     >

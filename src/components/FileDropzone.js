@@ -7,7 +7,7 @@ import {
   acceptStyle,
   rejectStyle,
 } from "../constants/FileDropzone";
-import { dropzoneError, dropzoneMsg } from "../constants/strings";
+import { genericError, dropzoneMsg } from "../constants/strings";
 
 function FileDropzone({ setPDFFile, setError }) {
   const fileType = ["application/pdf"];
@@ -25,7 +25,7 @@ function FileDropzone({ setPDFFile, setError }) {
       };
     } else {
       setPDFFile(null);
-      setDropzoneText(dropzoneError);
+      setDropzoneText(genericError);
     }
     setPDFFile(selectedFile);
     // eslint-disable-next-line react-hooks/exhaustive-deps
