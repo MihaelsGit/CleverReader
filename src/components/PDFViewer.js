@@ -14,17 +14,15 @@ export default function PDFViewer({ fileID, setLoading }) {
   useEffect(() => {
     let path = BASE_URL + fileID;
     setPdfURL(path);
-
     try {
       if (!pdfjsLib.getDocument || !pdfjsViewer.PDFViewer) {
         // eslint-disable-next-line no-alert
-        alert(
+        console.log(
           "Please build the pdfjs-dist library using\n  `gulp dist-install`"
         );
       }
 
-      pdfjsLib.GlobalWorkerOptions.workerSrc =
-        "../../node_modules/pdfjs-dist/build/pdf.worker.js";
+      pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
       const CMAP_URL = "../../node_modules/pdfjs-dist/cmaps/";
       const CMAP_PACKED = true;
@@ -35,7 +33,6 @@ export default function PDFViewer({ fileID, setLoading }) {
 
       const eventBus = new pdfjsViewer.EventBus();
 
-      // (Optionally) enable hyperlinks within PDF files.
       const pdfLinkService = new pdfjsViewer.PDFLinkService({
         eventBus,
       });
@@ -48,11 +45,8 @@ export default function PDFViewer({ fileID, setLoading }) {
       pdfLinkService.setViewer(pdfViewer);
 
       eventBus.on("pagesinit", function () {
-        // We can use pdfViewer now, e.g. let's change default scale.
         pdfViewer.currentScaleValue = "page-width";
       });
-
-      // Loading document.
       const loadingTask = pdfjsLib.getDocument({
         url: pdfURL,
         cMapUrl: CMAP_URL,
@@ -61,8 +55,7 @@ export default function PDFViewer({ fileID, setLoading }) {
       });
       (async function () {
         const pdfDocument = await loadingTask.promise;
-        // Document loaded, specifying document for the viewer and
-        // the (optional) linkService.
+
         pdfViewer.setDocument(pdfDocument);
 
         pdfLinkService.setDocument(pdfDocument, null);
@@ -72,7 +65,7 @@ export default function PDFViewer({ fileID, setLoading }) {
     } catch (err) {
       console.log("Error showing PDF :( => ", err);
     }
-  }, [fileID, pdfURL]);
+  }, [fileID, pdfURL, setLoading]);
 
   return (
     <div className="container">
