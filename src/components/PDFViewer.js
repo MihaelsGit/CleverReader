@@ -1,96 +1,78 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 
-import * as pdfjsLib from "pdfjs-dist/build/pdf";
-import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
 import { BASE_URL } from "../constants/path";
+import "../styles/Viewer.css";
 
-export default function PDFViewer({ fileID }) {
+import * as pdfjsLib from "../../node_modules/pdfjs-dist/build/pdf";
+import * as pdfjsViewer from "../../node_modules/pdfjs-dist/web/pdf_viewer";
+import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
+import "../../node_modules/pdfjs-dist/web/pdf_viewer.css";
+
+export default function PDFViewer({ fileID, pdfFile }) {
+  const [pdfURL, setPdfURL] = useState("");
+  const [file, setFile] = useState(null);
+
   pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
-  const [pdfRef, setPdfRef] = useState();
-
-  const renderPaper = useCallback(
-    (pdf = pdfRef, currentPageNumber) => {
-      if (pdf == null) return;
-      if (currentPageNumber <= pdf.numPages) {
-        pdf.getPage(currentPageNumber).then(function (page) {
-          const container = document.getElementById("container");
-
-          const viewport = page.getViewport({ scale: 2 });
-          const div = document.createElement("div");
-
-          div.setAttribute("id", "page-" + (page.pageNum + 1));
-          div.setAttribute("style", "position: relative");
-          container.appendChild(div);
-
-          const canvas = document.createElement("canvas");
-          div.appendChild(canvas);
-
-          const outputScale = window.devicePixelRatio || 1;
-
-          canvas.width = Math.floor(viewport.width * outputScale);
-          canvas.height = Math.floor(viewport.height * outputScale);
-          canvas.style.width = Math.floor(viewport.width) + "px";
-          canvas.style.height = Math.floor(viewport.height) + "px";
-
-          const transform =
-            outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
-
-          const renderContext = {
-            canvasContext: canvas.getContext("2d"),
-            transform: transform,
-            viewport: viewport,
-          };
-
-          page.render(renderContext);
-
-          page.getTextContent().then((text) => {
-            var textLayer = document.querySelector(".textLayer");
-
-            textLayer.style.left = canvas.offsetLeft + "px";
-            textLayer.style.top = canvas.offsetTop + "px";
-            textLayer.style.height = canvas.offsetHeight + "px";
-            textLayer.style.width = canvas.offsetWidth + "px";
-
-            // Pass the data to the method for rendering of text over the pdf canvas.
-            pdfjsLib.renderTextLayer({
-              textContent: text,
-              container: textLayer,
-              viewport: viewport,
-              textDivs: [],
-            });
-          });
-
-          renderPaper(pdf, currentPageNumber + 1);
-        });
+  useEffect(() => {
+    let path = BASE_URL + fileID;
+    setPdfURL(path);
+    try {
+      if (!pdfjsLib.getDocument || !pdfjsViewer.PDFViewer) {
+        // eslint-disable-next-line no-alert
+        console.log(
+          "Please build the pdfjs-dist library using\n  `gulp dist-install`"
+        );
       }
-    },
-    [pdfRef]
-  );
 
-  useEffect(() => {
-    renderPaper(pdfRef, 1);
-  }, [pdfRef, renderPaper, fileID]);
+      const CMAP_URL = "../../node_modules/pdfjs-dist/cmaps/";
+      const CMAP_PACKED = true;
 
-  useEffect(() => {
-    if (fileID !== null) {
-      let path = BASE_URL + fileID;
-      const loadingTask = pdfjsLib.getDocument(path);
-      loadingTask.promise.then(
-        (loadedPdf) => {
-          setPdfRef(loadedPdf);
-        },
-        (reason) => {
-          console.error(reason);
-        }
-      );
+      const PAGE_TO_VIEW = 1;
+      const SCALE = 1.0;
+
+      const ENABLE_XFA = true;
+      const container = document.getElementById("viewerContainer");
+      const eventBus = new pdfjsViewer.EventBus();
+
+      // (Optionally) enable hyperlinks within PDF files.
+      const pdfLinkService = new pdfjsViewer.PDFLinkService({
+        eventBus,
+      });
+
+      const pdfViewer = new pdfjsViewer.PDFViewer({
+        container,
+        eventBus,
+        linkService: pdfLinkService,
+      });
+      pdfLinkService.setViewer(pdfViewer);
+
+      eventBus.on("pagesinit", function () {
+        // We can use pdfViewer now, e.g. let's change default scale.
+        pdfViewer.currentScaleValue = "page-width";
+      });
+      const loadingTask = pdfjsLib.getDocument({
+        url: pdfURL,
+        cMapUrl: CMAP_URL,
+        cMapPacked: CMAP_PACKED,
+        enableXfa: ENABLE_XFA,
+      });
+      (async function () {
+        const pdfDocument = await loadingTask.promise;
+
+        pdfViewer.setDocument(pdfDocument);
+        pdfLinkService.setDocument(pdfDocument, null);
+      })();
+    } catch (error) {
+      console.log("Error reading");
     }
-  }, [fileID]);
+  }, [fileID, pdfURL]);
 
   return (
-    <div>
-      <div id="container"></div>
-      <div className="textLayer"></div>
+    <div className="container">
+      <div id="viewerContainer">
+        <div id="viewer" className="pdfViewer"></div>
+      </div>
     </div>
   );
 }
