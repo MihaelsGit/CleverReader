@@ -9,6 +9,7 @@ import KnowledgeGraphModal from "./components/KnowledgeGraphModal";
 import LoadingAnimation from "./components/LoadingAnimation";
 
 import { projectName } from "./constants/strings";
+import KnowledgeGraph from "./components/KnowledgeGraph";
 
 function App() {
   const [fileID, setFileID] = useState("");
@@ -54,6 +55,7 @@ function App() {
             path="/viewFile"
             element={<PDFViewer fileID={fileID} setLoading={setLoading} />}
           />
+          <Route exact path="/knowledgeGraph" element={<KnowledgeGraph />} />
         </Routes>
         <SummaryModal
           summaryText={summaryText}

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Spinner from 'react-bootstrap/Spinner';
+import Spinner from "react-bootstrap/Spinner";
 import "../styles/NavigationBar.css";
 import TooltipIconButton from "./TooltipIconButton";
 import { useLocation } from "react-router-dom";
@@ -8,8 +8,7 @@ import { useLocation } from "react-router-dom";
 function NavigationBar({
   summaryLoading,
   onSummaryClick,
-  onKnowledgeGraphClick,
-  knowledgeGraphLoading
+  knowledgeGraphLoading,
 }) {
   const { pathname } = useLocation();
 
@@ -29,33 +28,28 @@ function NavigationBar({
 
           <div className="navRight">
             {summaryLoading ? (
-              <Spinner
-                className="spinner"
-                animation="border"
-                role="status"
-              />
-            ) : 
+              <Spinner className="spinner" animation="border" role="status" />
+            ) : (
               <TooltipIconButton
                 id="summaryButton"
                 tooltipText={"Summary"}
                 iconPath={require("../styles/summary_icon.svg").default}
                 onButtonClick={onSummaryClick}
               />
-            }
-            {knowledgeGraphLoading ? (
-              <Spinner
-                className="spinner"
-                animation="border"
-                role="status"
-              />
-            ) : 
-              <TooltipIconButton
-                id="knowledgeGraphButton"
-                tooltipText={"Knowledge Graph"}
-                iconPath={require("../styles/knowledge_graph_icon.svg").default}
-                onButtonClick={onKnowledgeGraphClick}
-              />
-            }
+            )}
+            <Link to="/knowledgeGraph" target="_blank">
+              {knowledgeGraphLoading ? (
+                <Spinner className="spinner" animation="border" role="status" />
+              ) : (
+                <TooltipIconButton
+                  id="knowledgeGraphButton"
+                  tooltipText={"Knowledge Graph"}
+                  iconPath={
+                    require("../styles/knowledge_graph_icon.svg").default
+                  }
+                />
+              )}
+            </Link>
           </div>
         </div>
       ) : (
