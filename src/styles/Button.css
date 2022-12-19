@@ -4,4 +4,5 @@
   background-color: transparent;
   border-color: transparent;
   color: #000000;
+  user-select: none;
 }

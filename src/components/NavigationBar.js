@@ -1,11 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Spinner from "react-bootstrap/Spinner";
 import "../styles/NavigationBar.css";
 import TooltipIconButton from "./TooltipIconButton";
 import { useLocation } from "react-router-dom";
 
 function NavigationBar({
-  onSummaryClick
+  summaryLoading,
+  onSummaryClick,
+  knowledgeGraphLoading,
 }) {
   const { pathname } = useLocation();
 
@@ -24,18 +27,28 @@ function NavigationBar({
           </Link>
 
           <div className="navRight">
-            <TooltipIconButton
-              id="summaryButton"
-              tooltipText={"Summary"}
-              iconPath={require("../styles/summary_icon.svg").default}
-              onButtonClick={onSummaryClick}
-            />
-            <Link to="/knowledgeGraph" target="_blank">
+            {summaryLoading ? (
+              <Spinner className="spinner" animation="border" role="status" />
+            ) : (
               <TooltipIconButton
-                id="knowledgeGraphButton"
-                tooltipText={"Knowledge Graph"}
-                iconPath={require("../styles/knowledge_graph_icon.svg").default}
+                id="summaryButton"
+                tooltipText={"Summary"}
+                iconPath={require("../styles/summary_icon.svg").default}
+                onButtonClick={onSummaryClick}
               />
+            )}
+            <Link to="/knowledgeGraph" target="_blank">
+              {knowledgeGraphLoading ? (
+                <Spinner className="spinner" animation="border" role="status" />
+              ) : (
+                <TooltipIconButton
+                  id="knowledgeGraphButton"
+                  tooltipText={"Knowledge Graph"}
+                  iconPath={
+                    require("../styles/knowledge_graph_icon.svg").default
+                  }
+                />
+              )}
             </Link>
           </div>
         </div>
@@ -46,7 +59,8 @@ function NavigationBar({
             tooltipText={"Back"}
             iconPath={require("../styles/back_icon.svg").default}
           />
-        </div>)}
+        </div>
+      )}
     </nav>
   );
 }
