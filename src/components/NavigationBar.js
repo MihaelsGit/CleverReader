@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
 import "../styles/NavigationBar.css";
+import "../styles/App.css";
 import TooltipIconButton from "./TooltipIconButton";
 import { useLocation } from "react-router-dom";
 
