@@ -12,7 +12,7 @@ function TooltipIconButton({ tooltipText, iconPath, onButtonClick, tooltipPlacem
   return (
     <OverlayTrigger
       placement={tooltipPlacement}
-      delay={{ show: 100, hide: 100 }}
+      delay={{ show: 75, hide: 75 }}
       overlay={renderTooltip}
     >
       <button type="submit" className="iconButton" onClick={onButtonClick}>
