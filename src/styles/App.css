@@ -16,7 +16,10 @@ body {
 
 .header {
   width: 100%;
+  padding-top: 0.5vh;
   padding-bottom: 0.5vh;
+  padding-left: 0.5vw;
+  padding-right: 0.5vw;
   text-align: center;
   user-select: none;
   background: #187795;
