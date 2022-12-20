@@ -16,15 +16,15 @@ function NavigationBar({
     <nav className="navBar">
       {pathname !== "/" ? (
         <div>
-          <Link to="/">
             <div className="navLeft">
-              <TooltipIconButton
-                id="backButton"
-                tooltipText={"Back"}
-                iconPath={require("../styles/back_icon.svg").default}
-              />
+              <Link to="/" className="link">
+                <TooltipIconButton
+                  id="backButton"
+                  tooltipText={"Back"}
+                  iconPath={require("../styles/back_icon.svg").default}
+                />
+              </Link>
             </div>
-          </Link>
 
           <div className="navRight">
             {summaryLoading ? (
@@ -37,7 +37,7 @@ function NavigationBar({
                 onButtonClick={onSummaryClick}
               />
             )}
-            <Link to="/knowledgeGraph" target="_blank">
+            <Link to="/knowledgeGraph" target="_blank" className="link">
               {knowledgeGraphLoading ? (
                 <Spinner className="spinner" animation="border" role="status" />
               ) : (
