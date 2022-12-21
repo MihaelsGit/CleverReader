@@ -1,6 +1,9 @@
 .iconButton {
   padding: 0;
-  margin: 6px;
+  margin-left: 1vw;
+  margin-right: 1vw;
+  margin-top: 1vh;
+  margin-bottom: 1vh;
   background-color: transparent;
   border-color: transparent;
   color: #000000;

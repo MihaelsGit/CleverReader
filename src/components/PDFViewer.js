@@ -5,6 +5,8 @@ import "../styles/Viewer.css";
 
 import { Fab } from "@mui/material";
 
+import { ThemeProvider } from "@mui/material";
+import { clippyTheme } from "../styles/Themes.js";
 import { FaPlus, FaMinus } from "react-icons/fa";
 
 import { initializeViewer } from "../utils/initializePDF";
@@ -34,7 +36,8 @@ export default function PDFViewer({ fileID, setLoading }) {
         <div id="viewer" className="pdfViewer"></div>
       </div>
       <div className="buttons">
-        <Fab
+      <ThemeProvider theme={clippyTheme}>
+      <Fab
           color="primary"
           aria-label="zoom-in"
           onClick={() => zoomIn(viewer)}
@@ -48,6 +51,7 @@ export default function PDFViewer({ fileID, setLoading }) {
         >
           <FaMinus />
         </Fab>
+</ThemeProvider>
       </div>
     </div>
   );

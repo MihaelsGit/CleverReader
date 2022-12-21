@@ -16,14 +16,16 @@ body {
 
 .header {
   width: 100%;
-  padding: 20px;
+  padding-top: 0.5vh;
+  padding-bottom: 0.5vh;
+  padding-left: 0.5vw;
+  padding-right: 0.5vw;
   text-align: center;
   user-select: none;
   background: #187795;
   color: white;
   font-size: 30px;
   position: sticky;
-  top: 0px;
   z-index: 1;
   flex: 0;
 }
@@ -37,6 +39,10 @@ body {
   flex: 1;
   width: 75%;
   margin-top: 8%;
+}
+
+.link {
+  display: contents;
 }
 
 .loading {
