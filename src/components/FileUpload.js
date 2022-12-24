@@ -36,6 +36,7 @@ export default function FileUpload({ setLoading }) {
           setLoading(false);  
         } else {
           localStorage.setItem("FILE_ID", res);
+          navigate("/viewFile", {replace: true});
         }
       }
     };
