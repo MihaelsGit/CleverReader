@@ -12,12 +12,13 @@ import { FaPlus, FaMinus } from "react-icons/fa";
 import { initializeViewer } from "../utils/initializePDF";
 import { zoomIn, zoomOut } from "../utils/viewerFunctions";
 
-export default function PDFViewer({ fileID, setLoading }) {
+export default function PDFViewer({ setLoading }) {
   const [pdfURL, setPdfURL] = useState("");
   const [viewer, setViewer] = useState(null);
 
   useEffect(() => {
     setLoading(true);
+    let fileID = localStorage.getItem("FILE_ID");
     if (fileID !== "") {
       let path = BASE_URL + fileID;
       setPdfURL(path);
@@ -28,7 +29,7 @@ export default function PDFViewer({ fileID, setLoading }) {
         console.log("Error showing PDF :( => ", err);
       }
     }
-  }, [fileID, pdfURL, setLoading]);
+  }, [pdfURL, setLoading]);
 
   return (
     <div className="container">

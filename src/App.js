@@ -12,8 +12,6 @@ import { projectName } from "./constants/strings";
 import KnowledgeGraph from "./components/KnowledgeGraph";
 
 function App() {
-  const [fileID, setFileID] = useState("");
-
   const [summaryModalShow, setSummaryModalShow] = useState(false);
   const [summaryText, setSummaryText] = useState("");
 
@@ -45,15 +43,14 @@ function App() {
             path="/"
             element={
               <FileUpload
-                setFileId={setFileID}
                 setKnowledgeGraph={setKnowledgeGraph}
                 setLoading={setLoading}
               />
             }
           />
           <Route
-            path="/viewFile"
-            element={<PDFViewer fileID={fileID} setLoading={setLoading} />}
+            path="/viewFile/"
+            element={<PDFViewer setLoading={setLoading} />}
           />
           <Route exact path="/knowledgeGraph" element={<KnowledgeGraph />} />
         </Routes>
