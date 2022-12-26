@@ -18,7 +18,7 @@ function NavigationBar({
       {pathname !== "/" ? (
         <div>
             <div className="navLeft">
-              <Link to="/" className="link">
+              <Link to="/" className="link" replace>
                 <TooltipIconButton
                   id="backButton"
                   tooltipText={"Back"}
