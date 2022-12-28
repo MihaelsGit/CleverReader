@@ -62,4 +62,9 @@ body {
   font-size: 30px;
   font-weight: bold;
   user-select: none;
+  text-align: center;
+}
+
+.button{
+  text-align: center;
 }

@@ -1,10 +1,15 @@
-import { React, useRef, useCallback } from "react";
+import { React, useRef, useCallback, useEffect } from "react";
 import ForceGraph3D from "react-force-graph-3d";
-
-import { mockData } from "../constants/knowledgeGraphData";
+import { getKnowledgeGraph } from "../utils/axios";
+import { useState } from "react";
+import KnowledgeGraphModal from "./KnowledgeGraphModal";
+import LoadingAnimation from "./LoadingAnimation";
 
 export default function KnowledgeGraph() {
   const fgRef = useRef();
+  const [knowledgeGraphLoading, setKnowledgeGraphLoading] = useState(true);
+  const [knowledgeGraphData, setKnowledgeGraphData] = useState({nodes: [], links: [],});
+  const [knowledgeGraphModalShow, setKnowledgeGraphModalShow] = useState(false);
 
   const handleClick = useCallback(
     (node) => {
@@ -20,18 +25,57 @@ export default function KnowledgeGraph() {
     [fgRef]
   );
 
+useEffect( () => {
+  const knowledgeGraphResponse = async () => {
+    await getKnowledgeGraph({ pdfId: "" })
+      .then((result)=> { 
+        if (result != null) {
+            const res =  JSON.parse(result);
+            setKnowledgeGraphData(res);
+            setKnowledgeGraphLoading(false);
+        } else {
+            setKnowledgeGraphLoading(false);
+            setKnowledgeGraphModalShow(true);
+        }
+     });
+  }
+  
+knowledgeGraphResponse ()
+}, [knowledgeGraphLoading]);
+
+const handleRetry = () => {
+  setKnowledgeGraphLoading(true);
+  setKnowledgeGraphModalShow(false);
+}
   return (
-    <ForceGraph3D
-      graphData={mockData}
-      linkWidth={2}
-      nodeId="name"
-      ref={fgRef}
-      onNodeClick={handleClick}
-      nodeLabel={(node) =>
-        `name: ${node.name} <br />
-        surname: ${node.surname} <br />
-        age: ${node.age} <br />`
-      }
-    />
+    <>
+    {knowledgeGraphLoading ? (
+      <div className="loading">
+        <LoadingAnimation />
+      </div>
+    ) : ( 
+      knowledgeGraphModalShow ? (
+        <KnowledgeGraphModal
+          onButtonClick={handleRetry}
+          knowledgeGraph={""}
+          knowledgeGraphModalShow={knowledgeGraphModalShow}
+          knowledgeGraphModalHide={() => setKnowledgeGraphModalShow(false)}
+        />) : (
+        <ForceGraph3D
+          graphData={knowledgeGraphData}
+          linkWidth={2}
+          nodeId="name"
+          ref={fgRef}
+          onNodeClick={handleClick}
+          nodeLabel={(node) =>
+            `name: ${node.name} <br />
+            surname: ${node.surname} <br />
+            age: ${node.age} <br />`
+          }
+        />
+      )
+    )
+  }
+  </>
   );
 }

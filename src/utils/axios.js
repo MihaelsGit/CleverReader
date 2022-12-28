@@ -1,5 +1,6 @@
 import axios from "axios";
 import { BASE_URL, UPLOAD_URL, SUMMARY_URL, KNOWLEDGE_GRAPH_URL } from "../constants/path";
+import { mockData } from "../constants/knowledgeGraphData";
 
 export const uploadFile = async ({ data }) => {
   let response = null;
@@ -35,7 +36,7 @@ export const getSummaryText = async ({ pdfId }) => {
 };
 
 export const getKnowledgeGraph = async ({ pdfId }) => {
-  let response = null;
+  let response = JSON.stringify(mockData);
   let path = BASE_URL + KNOWLEDGE_GRAPH_URL + pdfId;
 
   await axios
