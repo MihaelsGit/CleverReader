@@ -1,9 +1,9 @@
 import Modal from 'react-bootstrap/Modal';
-import { knowledgeGraphTitle, close } from '../constants/strings';
+import { knowledgeGraphError, close } from '../constants/strings';
 import TooltipIconButton from "./TooltipIconButton";
 import "../styles/App.css";
 
-function KnowledgeGraphModal({ knowledgeGraph, knowledgeGraphModalShow, knowledgeGraphModalHide }) {
+function KnowledgeGraphModal({ onButtonClick, knowledgeGraphModalShow, knowledgeGraphModalHide }) {
 
   return (
     <Modal
@@ -20,7 +20,12 @@ function KnowledgeGraphModal({ knowledgeGraph, knowledgeGraphModalShow, knowledg
         />
       </Modal.Header>
       <Modal.Body>
-        <div className="modalTitle">{knowledgeGraphTitle}</div>
+        <div className="modalTitle">{knowledgeGraphError}</div>
+        <div className="button">
+          <button type="submit" className="btn btn-outline-primary center" onClick={onButtonClick}>
+            TRY AGAIN
+          </button>
+        </div>
       </Modal.Body>
     </Modal>
   );
