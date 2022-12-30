@@ -16,7 +16,7 @@ export const onReferenceHover = async (e, pdfDoc, pdfLinkServ) => {
     previewStyle.position = "fixed";
     previewStyle.zIndex = "99";
     previewStyle.top = `${e.clientY + 4}px`;
-    previewStyle.boxShadow = "5px 5px 5px black, -5px 5px 5px black";
+    previewStyle.boxShadow = "5px 5px 5px gray, -5px 5px 5px gray";
 
     const namedDest = decodeURIComponent(hash.substring(1));
     const explicitDest =
