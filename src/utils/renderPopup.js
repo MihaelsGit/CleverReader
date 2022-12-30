@@ -68,6 +68,7 @@ export const onReferenceHover = async (e, pdfDoc, pdfLinkServ) => {
 
     el.prepend(preview);
 
+    parent.after(preview);
     parent.addEventListener("mouseleave", (e) => {
       preview.remove();
     });
