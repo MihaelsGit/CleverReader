@@ -65,6 +65,7 @@ export const onReferenceHover = async (e, pdfDoc, pdfLinkServ) => {
         canvasContext: preview.getContext("2d"),
         transform: transform,
         viewport: viewport,
+        offsetY: offsetY
       };
       page.render(renderContext);
     });
