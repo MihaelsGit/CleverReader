@@ -2,8 +2,9 @@ import * as pdfjsLib from "pdfjs-dist/build/pdf";
 import * as pdfjsViewer from "pdfjs-dist/web/pdf_viewer";
 import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
 import "../../node_modules/pdfjs-dist/web/pdf_viewer.css";
+import { onReferenceHover } from "./renderPopup";
 
-export const initializeViewer = (url) => {
+export const initializeViewer = async (url) => {
   if (!pdfjsLib.getDocument || !pdfjsViewer.PDFViewer) {
     // eslint-disable-next-line no-alert
     console.log(
@@ -25,6 +26,15 @@ export const initializeViewer = (url) => {
     eventBus,
   });
 
+  const loadingTask = pdfjsLib.getDocument({
+    url: url,
+    cMapUrl: CMAP_URL,
+    cMapPacked: CMAP_PACKED,
+    enableXfa: ENABLE_XFA,
+  });
+
+  const pdfDocument = await loadingTask.promise;
+
   const pdfViewer = new pdfjsViewer.PDFViewer({
     container,
     eventBus,
@@ -37,19 +47,19 @@ export const initializeViewer = (url) => {
     pdfLinkService._ignoreDestinationZoom = true;
   });
 
-  const loadingTask = pdfjsLib.getDocument({
-    url: url,
-    cMapUrl: CMAP_URL,
-    cMapPacked: CMAP_PACKED,
-    enableXfa: ENABLE_XFA,
+  // Code for preview popup
+  eventBus.on("annotationlayerrendered", (e) => {
+    const page = e.source;
+    const annotationSections = page.annotationLayer.div.children;
+    Array.from(annotationSections).forEach((el) => {
+      el.addEventListener("mouseover", (e) =>
+        onReferenceHover(e, pdfDocument, pdfLinkService)
+      );
+    });
   });
-  (async function () {
-    const pdfDocument = await loadingTask.promise;
 
-    pdfViewer.setDocument(pdfDocument);
-
-    pdfLinkService.setDocument(pdfDocument, null);
-  })();
+  pdfViewer.setDocument(pdfDocument);
+  pdfLinkService.setDocument(pdfDocument, null);
 
   return pdfViewer;
 };
