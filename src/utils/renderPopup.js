@@ -56,7 +56,7 @@ export const onReferenceHover = async (e, pdfDoc, pdfLinkServ) => {
         scale: previewScale,
       });
 
-      preview.heigh = viewport.height;
+      preview.height = 300;
       preview.width = viewport.width;
 
       var transform =  previewScale !== 1 ? [previewScale, 0, 0, previewScale, 0, 0] : null;
