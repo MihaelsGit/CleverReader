@@ -27,9 +27,9 @@ export const onReferenceHover = async (e, pdfDoc, pdfLinkServ) => {
 
     pdfDoc.getPage(pageNumber).then((page) => {
       const curr_scale = pdfLinkServ.pdfViewer._currentScale;
-      const tempViewport = page.getViewport(curr_scale);
-      const height = tempViewport.height * 1.2 * curr_scale;
-      const width = tempViewport.width * 1.2 * curr_scale;
+      const tempViewport = page.getViewport(1);
+      const height = Math.floor(tempViewport.height * curr_scale* 1);
+      const width = Math.floor(tempViewport.width * curr_scale * 1);
       const leftOffset = e.clientX > halfWidth ? (2 * width) / 3 : width / 3;
       previewStyle.height = `${height}px`;
       previewStyle.width = `${width}px`;
@@ -47,20 +47,23 @@ export const onReferenceHover = async (e, pdfDoc, pdfLinkServ) => {
           offsetY = explicitDest[2];
           break;
         default:
+          offsetY = 0;
           console.log(`Oops, link ${explicitDest[1].name} is not supported.`);
       }
 
-      const scale = curr_scale / 4;
+      const previewScale = curr_scale * 0.75;
       const viewport = page.getViewport({
-        scale,
-        offsetY: (offsetY - tempViewport.height) * scale,
+        scale: previewScale,
       });
 
-      preview.height = viewport.height;
+      preview.heigh = viewport.height;
       preview.width = viewport.width;
+
+      var transform =  previewScale !== 1 ? [previewScale, 0, 0, previewScale, 0, 0] : null;
 
       const renderContext = {
         canvasContext: preview.getContext("2d"),
+        transform: transform,
         viewport: viewport,
       };
       page.render(renderContext);
