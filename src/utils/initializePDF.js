@@ -72,6 +72,4 @@ export const initializeViewer = async (url) => {
 
   pdfViewer.setDocument(pdfDocument);
   pdfLinkService.setDocument(pdfDocument, null);
-
-  return pdfViewer;
 };

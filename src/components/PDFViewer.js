@@ -8,6 +8,7 @@ import { Fab } from "@mui/material";
 import { ThemeProvider } from "@mui/material";
 import { clippyTheme } from "../styles/Themes.js";
 import { FaPlus, FaMinus } from "react-icons/fa";
+import { initializeViewer } from "../utils/initializePDF";
 
 export default function PDFViewer({ setLoading }) {
   const [pdfURL, setPdfURL] = useState("");
@@ -18,6 +19,7 @@ export default function PDFViewer({ setLoading }) {
     if (fileID !== "") {
       let path = BASE_URL + fileID;
       setPdfURL(path);
+      initializeViewer(pdfURL);
       try {
         setLoading(false);
       } catch (err) {
