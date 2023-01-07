@@ -11,12 +11,13 @@ export const onReferenceHover = async (e, pdfDoc, pdfLinkServ) => {
 
     const preview = document.createElement("canvas");
     const previewStyle = preview.style;
-    previewStyle.border = "1px solid black";
+    previewStyle.border = "0.5px solid grey";
+    previewStyle.borderRadius = "8px";
     previewStyle.direction = "ltr";
     previewStyle.position = "fixed";
     previewStyle.zIndex = "99";
     previewStyle.top = `${e.clientY + 4}px`;
-    previewStyle.boxShadow = "5px 5px 5px gray, -5px 5px 5px gray";
+    previewStyle.boxShadow = "-5px 6px 9px 0px rgba(135,135,135,0.71)";
 
     const namedDest = decodeURIComponent(hash.substring(1));
     const explicitDest =
@@ -28,7 +29,7 @@ export const onReferenceHover = async (e, pdfDoc, pdfLinkServ) => {
     pdfDoc.getPage(pageNumber).then((page) => {
       const curr_scale = pdfLinkServ.pdfViewer._currentScale;
       const tempViewport = page.getViewport(1);
-      const height = Math.floor(tempViewport.height * curr_scale* 1);
+      const height = Math.floor(tempViewport.height * curr_scale * 1);
       const width = Math.floor(tempViewport.width * curr_scale * 1);
       const leftOffset = e.clientX > halfWidth ? (2 * width) / 3 : width / 3;
       previewStyle.height = `${height}px`;
@@ -59,13 +60,14 @@ export const onReferenceHover = async (e, pdfDoc, pdfLinkServ) => {
       preview.height = 300;
       preview.width = viewport.width;
 
-      var transform =  previewScale !== 1 ? [previewScale, 0, 0, previewScale, 0, 0] : null;
+      var transform =
+        previewScale !== 1 ? [previewScale, 0, 0, previewScale, 0, 0] : null;
 
       const renderContext = {
         canvasContext: preview.getContext("2d"),
         transform: transform,
         viewport: viewport,
-        offsetY: offsetY
+        offsetY: offsetY,
       };
       page.render(renderContext);
     });

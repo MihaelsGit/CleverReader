@@ -9,12 +9,8 @@ import { ThemeProvider } from "@mui/material";
 import { clippyTheme } from "../styles/Themes.js";
 import { FaPlus, FaMinus } from "react-icons/fa";
 
-import { initializeViewer } from "../utils/initializePDF";
-import { zoomIn, zoomOut } from "../utils/viewerFunctions";
-
 export default function PDFViewer({ setLoading }) {
   const [pdfURL, setPdfURL] = useState("");
-  const [viewer, setViewer] = useState(null);
 
   useEffect(() => {
     setLoading(true);
@@ -23,7 +19,6 @@ export default function PDFViewer({ setLoading }) {
       let path = BASE_URL + fileID;
       setPdfURL(path);
       try {
-        setViewer(initializeViewer(pdfURL));
         setLoading(false);
       } catch (err) {
         console.log("Error showing PDF :( => ", err);
@@ -37,22 +32,14 @@ export default function PDFViewer({ setLoading }) {
         <div id="viewer" className="pdfViewer"></div>
       </div>
       <div className="buttons">
-      <ThemeProvider theme={clippyTheme}>
-      <Fab
-          color="primary"
-          aria-label="zoom-in"
-          onClick={() => zoomIn(viewer)}
-        >
-          <FaPlus />
-        </Fab>
-        <Fab
-          color="primary"
-          aria-label="zoom-out"
-          onClick={() => zoomOut(viewer)}
-        >
-          <FaMinus />
-        </Fab>
-</ThemeProvider>
+        <ThemeProvider theme={clippyTheme}>
+          <Fab id="zoomInBtn" color="primary" aria-label="zoom-in">
+            <FaPlus />
+          </Fab>
+          <Fab id="zoomOutBtn" color="primary" aria-label="zoom-out">
+            <FaMinus />
+          </Fab>
+        </ThemeProvider>
       </div>
     </div>
   );
