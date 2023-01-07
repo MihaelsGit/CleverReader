@@ -3,6 +3,7 @@ import * as pdfjsViewer from "pdfjs-dist/web/pdf_viewer";
 import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
 import "../../node_modules/pdfjs-dist/web/pdf_viewer.css";
 import { onReferenceHover } from "./renderPopup";
+import { zoomIn, zoomOut } from "./viewerFunctions";
 
 export const initializeViewer = async (url) => {
   if (!pdfjsLib.getDocument || !pdfjsViewer.PDFViewer) {
@@ -19,6 +20,16 @@ export const initializeViewer = async (url) => {
   const ENABLE_XFA = true;
 
   const container = document.getElementById("viewerContainer");
+  const zoomInBtn = document.getElementById("zoomInBtn");
+  const zoomOutBtn = document.getElementById("zoomOutBtn");
+
+  zoomInBtn.addEventListener("click", () => {
+    zoomIn(pdfViewer);
+  });
+
+  zoomOutBtn.addEventListener("click", () => {
+    zoomOut(pdfViewer);
+  });
 
   const eventBus = new pdfjsViewer.EventBus();
 
@@ -40,6 +51,7 @@ export const initializeViewer = async (url) => {
     eventBus,
     linkService: pdfLinkService,
   });
+
   pdfLinkService.setViewer(pdfViewer);
 
   eventBus.on("pagesinit", function () {
@@ -52,14 +64,12 @@ export const initializeViewer = async (url) => {
     const page = e.source;
     const annotationSections = page.annotationLayer.div.children;
     Array.from(annotationSections).forEach((el) => {
-      el.addEventListener("mouseover", (e) =>
-        onReferenceHover(e, pdfDocument, pdfLinkService)
-      );
+      el.addEventListener("mouseover", (e) => {
+        onReferenceHover(e, pdfDocument, pdfLinkService);
+      });
     });
   });
 
   pdfViewer.setDocument(pdfDocument);
   pdfLinkService.setDocument(pdfDocument, null);
-
-  return pdfViewer;
 };
