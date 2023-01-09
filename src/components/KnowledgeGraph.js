@@ -64,13 +64,13 @@ const handleRetry = () => {
         <ForceGraph3D
           graphData={knowledgeGraphData}
           linkWidth={2}
-          nodeId="name"
+          nodeId="id"
           ref={fgRef}
           onNodeClick={handleClick}
           nodeLabel={(node) =>
-            `name: ${node.name} <br />
-            surname: ${node.surname} <br />
-            age: ${node.age} <br />`
+            `Title: ${node.title} <br />
+            Authors: ${node.authors} <br />
+            Year: ${node.year} <br />`
           }
         />
       )
