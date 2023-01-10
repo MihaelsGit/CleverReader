@@ -13,11 +13,14 @@ import { initializeViewer } from "../utils/initializePDF";
 export default function PDFViewer({ setLoading }) {
   const [pdfURL, setPdfURL] = useState("");
 
+  const [pdfId, setPdfId] = useState("");
+
   useEffect(() => {
     setLoading(true);
     let fileID = localStorage.getItem("FILE_ID");
-    if (fileID !== "") {
-      let path = BASE_URL + fileID;
+    setPdfId(fileID);
+    if (pdfId !== "") {
+      let path = BASE_URL + pdfId;
       setPdfURL(path);
       initializeViewer(pdfURL);
       try {
@@ -26,7 +29,7 @@ export default function PDFViewer({ setLoading }) {
         console.log("Error showing PDF :( => ", err);
       }
     }
-  }, [pdfURL, setLoading]);
+  }, [pdfId, pdfURL, setLoading]);
 
   return (
     <div className="container">

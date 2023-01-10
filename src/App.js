@@ -4,34 +4,69 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import CustomHeader from "./components/CustomHeader";
 import FileUpload from "./components/FileUpload";
 import PDFViewer from "./components/PDFViewer";
-import SummaryModal from "./components/SummaryModal";
-import KnowledgeGraphModal from "./components/KnowledgeGraphModal";
 import LoadingAnimation from "./components/LoadingAnimation";
 
 import { projectName } from "./constants/strings";
-import KnowledgeGraph from "./components/KnowledgeGraph";
+import { getKnowledgeGraph, getSummaryText } from "./utils/axios";
+import KnowledgeGraphModal from "./components/KnowledgeGraphModal";
 
 function App() {
-  const [summaryModalShow, setSummaryModalShow] = useState(false);
   const [summaryText, setSummaryText] = useState("");
+  const [modalLoading, setModalLoading] = useState(true);
 
-  const [knowledgeGraphModalShow, setKnowledgeGraphModalShow] = useState(false);
-  const [knowledgeGraph, setKnowledgeGraph] = useState("");
+  const [references, setReferences] = useState(null);
+  const [knowledgeGraphOpen, setKnowledgeGraphOpen] = useState(false);
+  const [knowledgeGraphLoading, setKnowledgeGraphLoading] = useState(true);
 
   const [loading, setLoading] = useState(false);
 
+  const [pdfFile, setPdfFile] = useState(null);
+
   useEffect(() => {
-    setLoading(false);
-  }, []);
+    (async () => {
+      if (pdfFile !== null) {
+        const data = new FormData();
+        data.append("file", pdfFile);
+        let summary = await getSummaryText({ data: data });
+        if (summary.data !== null) {
+          setSummaryText(summary);
+          setModalLoading(false);
+        }
+      }
+    })();
+
+    let fileID = localStorage.getItem("FILE_ID");
+    if (fileID) {
+      (async () => {
+        let tmp = await getKnowledgeGraph({ pdfId: fileID });
+        if (tmp !== null) {
+          setReferences(tmp);
+        }
+      })();
+    }
+  }, [pdfFile]);
+
+  useEffect(() => {
+    if (knowledgeGraphOpen) {
+      setKnowledgeGraphLoading(false);
+    } else if (references !== null && knowledgeGraphOpen) {
+      setKnowledgeGraphOpen(true);
+    }
+  }, [knowledgeGraphOpen, references]);
+
+  const closeKnowledgeGraph = () => {
+    setKnowledgeGraphOpen(false);
+  };
 
   return (
     <div className="wrapper">
       <BrowserRouter>
         <CustomHeader
           text={projectName}
-          setSummaryModalShow={setSummaryModalShow}
-          setSummaryText={setSummaryText}
-          setKnowledgeGraphShow={setKnowledgeGraphModalShow}
+          summaryText={summaryText}
+          modalLoading={modalLoading}
+          setKnowledgeGraphOpen={setKnowledgeGraphOpen}
+          knowledgeGraphLoading={knowledgeGraphLoading}
         />
         {loading ? (
           <div className="loading">
@@ -43,28 +78,32 @@ function App() {
             path="/"
             element={
               <FileUpload
-                setKnowledgeGraph={setKnowledgeGraph}
                 setLoading={setLoading}
+                setPdfFile={setPdfFile}
+                setModalLoading={setModalLoading}
+                setSummaryText={setSummaryText}
+                setKnowledgeGraphLoading={setKnowledgeGraphLoading}
+                setReferences={setReferences}
               />
             }
           />
           <Route
             path="/viewFile/"
-            element={<PDFViewer setLoading={setLoading} />}
+            element={
+              <PDFViewer
+                setLoading={setLoading}
+                setSummaryText={setSummaryText}
+                pdfFile={pdfFile}
+              />
+            }
           />
-          <Route exact path="/knowledgeGraph" element={<KnowledgeGraph />} />
         </Routes>
-        <SummaryModal
-          summaryText={summaryText}
-          summaryModalShow={summaryModalShow}
-          summaryModalHide={() => setSummaryModalShow(false)}
-        />
-        <KnowledgeGraphModal
-          knowledgeGraph={knowledgeGraph}
-          knowledgeGraphModalShow={knowledgeGraphModalShow}
-          knowledgeGraphModalHide={() => setKnowledgeGraphModalShow(false)}
-        />
       </BrowserRouter>
+      <KnowledgeGraphModal
+        references={references}
+        knowledgeGraphModalShow={knowledgeGraphOpen}
+        knowledgeGraphModalHide={closeKnowledgeGraph}
+      />
     </div>
   );
 }
