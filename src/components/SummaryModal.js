@@ -22,7 +22,7 @@ function SummaryModal({ summaryText, summaryModalShow, summaryModalHide }) {
   };
 
   const onCopyClick = () => {
-    copyTextToClipboard(summaryText)
+    copyTextToClipboard(summaryText.data)
       .then(() => {
         setTooltipText(copied);
       })
