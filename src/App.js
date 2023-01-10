@@ -5,33 +5,44 @@ import CustomHeader from "./components/CustomHeader";
 import FileUpload from "./components/FileUpload";
 import PDFViewer from "./components/PDFViewer";
 import SummaryModal from "./components/SummaryModal";
-import KnowledgeGraphModal from "./components/KnowledgeGraphModal";
 import LoadingAnimation from "./components/LoadingAnimation";
 
 import { projectName } from "./constants/strings";
 import KnowledgeGraph from "./components/KnowledgeGraph";
+import { getSummaryText } from "./utils/axios";
 
 function App() {
-  const [summaryModalShow, setSummaryModalShow] = useState(false);
   const [summaryText, setSummaryText] = useState("");
+  const [modalLoading, setModalLoading] = useState(true);
 
   const [knowledgeGraphModalShow, setKnowledgeGraphModalShow] = useState(false);
-  const [knowledgeGraph, setKnowledgeGraph] = useState("");
+  const [knowledgeGraphData, setKnowledgeGraphData] = useState("");
 
   const [loading, setLoading] = useState(false);
 
+  const [pdfFile, setPdfFile] = useState(null);
+
   useEffect(() => {
-    setLoading(false);
-  }, []);
+    (async () => {
+      if (pdfFile !== null) {
+        const data = new FormData();
+        data.append("file", pdfFile);
+        let summary = await getSummaryText({ data: data });
+        if (summary.data !== null) {
+          setSummaryText(summary);
+          setModalLoading(false);
+        }
+      }
+    })();
+  }, [pdfFile]);
 
   return (
     <div className="wrapper">
       <BrowserRouter>
         <CustomHeader
           text={projectName}
-          setSummaryModalShow={setSummaryModalShow}
-          setSummaryText={setSummaryText}
-          setKnowledgeGraphShow={setKnowledgeGraphModalShow}
+          summaryText={summaryText}
+          modalLoading={modalLoading}
         />
         {loading ? (
           <div className="loading">
@@ -43,27 +54,26 @@ function App() {
             path="/"
             element={
               <FileUpload
-                setKnowledgeGraph={setKnowledgeGraph}
                 setLoading={setLoading}
+                setPdfFile={setPdfFile}
+                setModalLoading={setModalLoading}
+                setSummaryText={setSummaryText}
               />
             }
           />
           <Route
             path="/viewFile/"
-            element={<PDFViewer setLoading={setLoading} />}
+            element={
+              <PDFViewer
+                setLoading={setLoading}
+                setSummaryText={setSummaryText}
+                setKnowledgeGraphData={setKnowledgeGraphData}
+                pdfFile={pdfFile}
+              />
+            }
           />
           <Route exact path="/knowledgeGraph" element={<KnowledgeGraph />} />
         </Routes>
-        <SummaryModal
-          summaryText={summaryText}
-          summaryModalShow={summaryModalShow}
-          summaryModalHide={() => setSummaryModalShow(false)}
-        />
-        <KnowledgeGraphModal
-          knowledgeGraph={knowledgeGraph}
-          knowledgeGraphModalShow={knowledgeGraphModalShow}
-          knowledgeGraphModalHide={() => setKnowledgeGraphModalShow(false)}
-        />
       </BrowserRouter>
     </div>
   );

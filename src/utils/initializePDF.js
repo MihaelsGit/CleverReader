@@ -37,14 +37,19 @@ export const initializeViewer = async (url) => {
     eventBus,
   });
 
-  const loadingTask = pdfjsLib.getDocument({
-    url: url,
-    cMapUrl: CMAP_URL,
-    cMapPacked: CMAP_PACKED,
-    enableXfa: ENABLE_XFA,
-  });
-
-  const pdfDocument = await loadingTask.promise;
+  let loadingTask;
+  let pdfDocument;
+  try {
+    loadingTask = pdfjsLib.getDocument({
+      url: url,
+      cMapUrl: CMAP_URL,
+      cMapPacked: CMAP_PACKED,
+      enableXfa: ENABLE_XFA,
+    });
+    pdfDocument = await loadingTask.promise;
+  } catch (error) {
+    console.log("error getting pdf document: ", error);
+  }
 
   const pdfViewer = new pdfjsViewer.PDFViewer({
     container,

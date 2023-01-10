@@ -10,45 +10,10 @@ import { summaryError, knowledgeGraphError } from "../constants/strings";
 function CustomHeader({
   text,
   setSummaryModalShow,
-  setSummaryText,
-  setKnowledgeGraphShow,
+  summaryText,
+  modalLoading,
 }) {
-  const [summaryLoading, setSummaryLoading] = useState(false);
   const [knowledgeGraphLoading, setKnowledgeGraphLoading] = useState(false);
-
-  const getSummary = async () => {
-    setSummaryLoading(true);
-
-    const summaryResponse = await getSummaryText({ pdfId: "" });
-
-    setSummaryLoading(false);
-
-    if (summaryResponse != null) {
-      setSummaryText(summaryResponse);
-      setSummaryModalShow(true);
-    } else {
-      toast.error(summaryError, {
-        id: "toast",
-      });
-    }
-  };
-
-  const getKnowledgeGraphData = async () => {
-    setKnowledgeGraphLoading(true);
-
-    const knowledgeGraphResponse = await getKnowledgeGraph({ pdfId: "" });
-
-    setKnowledgeGraphLoading(false);
-
-    if (knowledgeGraphResponse != null) {
-      //setKnowledgeGraph(knowledgeGraphResponse);
-      setKnowledgeGraphShow(true);
-    } else {
-      toast.error(knowledgeGraphError, {
-        id: "toast",
-      });
-    }
-  };
 
   const { pathname } = useLocation();
 
@@ -58,10 +23,11 @@ function CustomHeader({
       <div className="header">
         {text}
         <NavigationBar
-          summaryLoading={summaryLoading}
-          onSummaryClick={() => getSummary()}
+          modalLoading={modalLoading}
+          setSummaryModalShow={setSummaryModalShow}
+          summaryText={summaryText}
           knowledgeGraphLoading={knowledgeGraphLoading}
-          onKnowledgeGraphClick={() => getKnowledgeGraphData()}
+          onKnowledgeGraphClick={() => {}}
         />
       </div>
     </>
