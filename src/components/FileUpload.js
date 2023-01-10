@@ -17,7 +17,6 @@ export default function FileUpload({
   setModalLoading,
   setKnowledgeGraphLoading,
   setReferences,
-  setFileId,
 }) {
   const [pdfFile, setPdf] = useState(null);
   const navigate = useNavigate();
@@ -63,7 +62,6 @@ export default function FileUpload({
           setLoading(false);
         } else {
           localStorage.setItem("FILE_ID", id);
-          setFileId(id);
           navigate("/viewFile", { replace: true });
         }
       }

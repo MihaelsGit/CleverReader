@@ -1,5 +1,5 @@
 import Modal from "react-bootstrap/Modal";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   summaryTitle,
   copyToClipboard,
@@ -9,7 +9,6 @@ import {
 } from "../constants/strings";
 import TooltipIconButton from "./TooltipIconButton";
 import "../styles/App.css";
-import { Spinner } from "react-bootstrap";
 
 function SummaryModal({ summaryText, summaryModalShow, summaryModalHide }) {
   const [tooltipText, setTooltipText] = useState(copyToClipboard);

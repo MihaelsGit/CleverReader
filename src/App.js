@@ -21,7 +21,6 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   const [pdfFile, setPdfFile] = useState(null);
-  const [fileId, setFileId] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -35,9 +34,7 @@ function App() {
         }
       }
     })();
-  }, [pdfFile]);
 
-  useEffect(() => {
     let fileID = localStorage.getItem("FILE_ID");
     if (fileID) {
       (async () => {
@@ -47,7 +44,7 @@ function App() {
         }
       })();
     }
-  }, [fileId]);
+  }, [pdfFile]);
 
   useEffect(() => {
     if (knowledgeGraphOpen) {
@@ -87,7 +84,6 @@ function App() {
                 setSummaryText={setSummaryText}
                 setKnowledgeGraphLoading={setKnowledgeGraphLoading}
                 setReferences={setReferences}
-                setFileId={setFileId}
               />
             }
           />
