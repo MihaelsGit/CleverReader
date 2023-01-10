@@ -6,8 +6,11 @@ import "../styles/App.css";
 import TooltipIconButton from "./TooltipIconButton";
 import { useLocation } from "react-router-dom";
 import SummaryModal from "./SummaryModal";
-
-function NavigationBar({ onSummaryClick, knowledgeGraphLoading, summaryText }) {
+function NavigationBar({
+  summaryText,
+  setKnowledgeGraphOpen,
+  knowledgeGraphLoading,
+}) {
   const { pathname } = useLocation();
 
   const [summaryModalShow, setSummaryModalShow] = useState(false);
@@ -31,6 +34,10 @@ function NavigationBar({ onSummaryClick, knowledgeGraphLoading, summaryText }) {
   const closeModal = () => {
     setSummaryModalShow(false);
     setModalLoading(false);
+  };
+
+  const openKnowledgeGraph = () => {
+    setKnowledgeGraphOpen(true);
   };
 
   return (
@@ -60,23 +67,18 @@ function NavigationBar({ onSummaryClick, knowledgeGraphLoading, summaryText }) {
                 />
               )}
 
-              <Link to="/knowledgeGraph" target="_blank" className="link">
-                {knowledgeGraphLoading ? (
-                  <Spinner
-                    className="spinner"
-                    animation="border"
-                    role="status"
-                  />
-                ) : (
-                  <TooltipIconButton
-                    id="knowledgeGraphButton"
-                    tooltipText={"Knowledge Graph"}
-                    iconPath={
-                      require("../styles/knowledge_graph_icon.svg").default
-                    }
-                  />
-                )}
-              </Link>
+              {knowledgeGraphLoading ? (
+                <Spinner className="spinner" animation="border" role="status" />
+              ) : (
+                <TooltipIconButton
+                  id="knowledgeGraphButton"
+                  tooltipText={"Knowledge Graph"}
+                  iconPath={
+                    require("../styles/knowledge_graph_icon.svg").default
+                  }
+                  onButtonClick={openKnowledgeGraph}
+                />
+              )}
             </div>
           </div>
         ) : (

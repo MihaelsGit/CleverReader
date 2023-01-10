@@ -1,16 +1,16 @@
-import Modal from 'react-bootstrap/Modal';
-import { knowledgeGraphError, close } from '../constants/strings';
+import Modal from "react-bootstrap/Modal";
+import { close, knowledgeGraphWaiting } from "../constants/strings";
 import TooltipIconButton from "./TooltipIconButton";
 import "../styles/App.css";
+import KnowledgeGraph from "./KnowledgeGraph";
 
-function KnowledgeGraphModal({ onButtonClick, knowledgeGraphModalShow, knowledgeGraphModalHide }) {
-
+function KnowledgeGraphModal({
+  knowledgeGraphModalShow,
+  knowledgeGraphModalHide,
+  references,
+}) {
   return (
-    <Modal
-      size="lg"
-      centered
-      show={knowledgeGraphModalShow}
-    >
+    <Modal size="lg" centered show={knowledgeGraphModalShow}>
       <Modal.Header>
         <TooltipIconButton
           id="closeButton"
@@ -19,14 +19,25 @@ function KnowledgeGraphModal({ onButtonClick, knowledgeGraphModalShow, knowledge
           onButtonClick={knowledgeGraphModalHide}
         />
       </Modal.Header>
-      <Modal.Body>
-        <div className="modalTitle">{knowledgeGraphError}</div>
-        <div className="button">
-          <button type="submit" className="btn btn-outline-primary center" onClick={onButtonClick}>
-            TRY AGAIN
-          </button>
-        </div>
-      </Modal.Body>
+      {references !== null ? (
+        <Modal.Body
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <div>
+            <KnowledgeGraph references={references} />
+          </div>
+        </Modal.Body>
+      ) : (
+        <Modal.Body>
+          <div style={{ textAlign: "center" }}>
+            <p>{knowledgeGraphWaiting}</p>
+          </div>
+        </Modal.Body>
+      )}
     </Modal>
   );
 }

@@ -9,33 +9,11 @@ import { ThemeProvider } from "@mui/material";
 import { clippyTheme } from "../styles/Themes.js";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { initializeViewer } from "../utils/initializePDF";
-import { getKnowledgeGraph, getSummaryText } from "../utils/axios";
 
-export default function PDFViewer({ setLoading, setSummaryText, pdfFile }) {
+export default function PDFViewer({ setLoading }) {
   const [pdfURL, setPdfURL] = useState("");
 
   const [pdfId, setPdfId] = useState("");
-  /*
-  useEffect(() => {
-    (async () => {
-      if (pdfFile !== null) {
-        const data = new FormData();
-        data.append("file", pdfFile);
-        let summary = await getSummaryText({ data: data });
-        if (summary.data !== null) {
-          setSummaryText(summary);
-        }
-      }
-    })();
-
-    let fileID = localStorage.getItem("FILE_ID");
-    if (fileID !== "") {
-      (async () => {
-        let references = await getKnowledgeGraph({ pdfId: fileID });
-        console.log("reference => ", references);
-      })();
-    }
-  }, []);*/
 
   useEffect(() => {
     setLoading(true);

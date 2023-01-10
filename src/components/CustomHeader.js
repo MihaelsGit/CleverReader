@@ -1,20 +1,17 @@
-import React, { useState } from "react";
-
 import "../styles/App.css";
-import { getSummaryText, getKnowledgeGraph } from "../utils/axios";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import NavigationBar from "./NavigationBar";
 import { useLocation } from "react-router-dom";
-import { summaryError, knowledgeGraphError } from "../constants/strings";
 
 function CustomHeader({
   text,
   setSummaryModalShow,
   summaryText,
   modalLoading,
+  setKnowledgeGraphOpen,
+  knowledgeGraphLoading,
+  references,
 }) {
-  const [knowledgeGraphLoading, setKnowledgeGraphLoading] = useState(false);
-
   const { pathname } = useLocation();
 
   return pathname !== "/knowledgeGraph" ? (
@@ -26,8 +23,8 @@ function CustomHeader({
           modalLoading={modalLoading}
           setSummaryModalShow={setSummaryModalShow}
           summaryText={summaryText}
+          setKnowledgeGraphOpen={setKnowledgeGraphOpen}
           knowledgeGraphLoading={knowledgeGraphLoading}
-          onKnowledgeGraphClick={() => {}}
         />
       </div>
     </>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getKnowledgeGraph, getSummaryText, uploadFile } from "../utils/axios";
+import { uploadFile } from "../utils/axios";
 
 import "../styles/Button.css";
 import FileDropzone from "./FileDropzone";
@@ -15,6 +15,9 @@ export default function FileUpload({
   setPdfFile,
   setSummaryText,
   setModalLoading,
+  setKnowledgeGraphLoading,
+  setReferences,
+  setFileId,
 }) {
   const [pdfFile, setPdf] = useState(null);
   const navigate = useNavigate();
@@ -23,7 +26,15 @@ export default function FileUpload({
     setLoading(false);
     setModalLoading(true);
     setSummaryText("");
-  }, [setLoading, setModalLoading, setSummaryText]);
+    setKnowledgeGraphLoading(false);
+    setReferences(null);
+  }, [
+    setKnowledgeGraphLoading,
+    setLoading,
+    setModalLoading,
+    setReferences,
+    setSummaryText,
+  ]);
 
   useEffect(() => {
     if (pdfFile !== null && pdfFile.type !== "application/pdf") {
@@ -52,11 +63,12 @@ export default function FileUpload({
           setLoading(false);
         } else {
           localStorage.setItem("FILE_ID", id);
+          setFileId(id);
           navigate("/viewFile", { replace: true });
         }
       }
     })();
-  }, [pdfFile, navigate, setLoading]);
+  }, [pdfFile, navigate, setLoading, setPdfFile]);
 
   return (
     <div className="dropzone">

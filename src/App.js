@@ -4,23 +4,24 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import CustomHeader from "./components/CustomHeader";
 import FileUpload from "./components/FileUpload";
 import PDFViewer from "./components/PDFViewer";
-import SummaryModal from "./components/SummaryModal";
 import LoadingAnimation from "./components/LoadingAnimation";
 
 import { projectName } from "./constants/strings";
-import KnowledgeGraph from "./components/KnowledgeGraph";
-import { getSummaryText } from "./utils/axios";
+import { getKnowledgeGraph, getSummaryText } from "./utils/axios";
+import KnowledgeGraphModal from "./components/KnowledgeGraphModal";
 
 function App() {
   const [summaryText, setSummaryText] = useState("");
   const [modalLoading, setModalLoading] = useState(true);
 
-  const [knowledgeGraphModalShow, setKnowledgeGraphModalShow] = useState(false);
-  const [knowledgeGraphData, setKnowledgeGraphData] = useState("");
+  const [references, setReferences] = useState(null);
+  const [knowledgeGraphOpen, setKnowledgeGraphOpen] = useState(false);
+  const [knowledgeGraphLoading, setKnowledgeGraphLoading] = useState(true);
 
   const [loading, setLoading] = useState(false);
 
   const [pdfFile, setPdfFile] = useState(null);
+  const [fileId, setFileId] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -36,6 +37,30 @@ function App() {
     })();
   }, [pdfFile]);
 
+  useEffect(() => {
+    let fileID = localStorage.getItem("FILE_ID");
+    if (fileID) {
+      (async () => {
+        let tmp = await getKnowledgeGraph({ pdfId: fileID });
+        if (tmp !== null) {
+          setReferences(tmp);
+        }
+      })();
+    }
+  }, [fileId]);
+
+  useEffect(() => {
+    if (knowledgeGraphOpen) {
+      setKnowledgeGraphLoading(false);
+    } else if (references !== null && knowledgeGraphOpen) {
+      setKnowledgeGraphOpen(true);
+    }
+  }, [knowledgeGraphOpen, references]);
+
+  const closeKnowledgeGraph = () => {
+    setKnowledgeGraphOpen(false);
+  };
+
   return (
     <div className="wrapper">
       <BrowserRouter>
@@ -43,6 +68,8 @@ function App() {
           text={projectName}
           summaryText={summaryText}
           modalLoading={modalLoading}
+          setKnowledgeGraphOpen={setKnowledgeGraphOpen}
+          knowledgeGraphLoading={knowledgeGraphLoading}
         />
         {loading ? (
           <div className="loading">
@@ -58,6 +85,9 @@ function App() {
                 setPdfFile={setPdfFile}
                 setModalLoading={setModalLoading}
                 setSummaryText={setSummaryText}
+                setKnowledgeGraphLoading={setKnowledgeGraphLoading}
+                setReferences={setReferences}
+                setFileId={setFileId}
               />
             }
           />
@@ -67,14 +97,17 @@ function App() {
               <PDFViewer
                 setLoading={setLoading}
                 setSummaryText={setSummaryText}
-                setKnowledgeGraphData={setKnowledgeGraphData}
                 pdfFile={pdfFile}
               />
             }
           />
-          <Route exact path="/knowledgeGraph" element={<KnowledgeGraph />} />
         </Routes>
       </BrowserRouter>
+      <KnowledgeGraphModal
+        references={references}
+        knowledgeGraphModalShow={knowledgeGraphOpen}
+        knowledgeGraphModalHide={closeKnowledgeGraph}
+      />
     </div>
   );
 }

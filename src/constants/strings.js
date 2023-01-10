@@ -8,16 +8,18 @@ export const genericError =
 
 export const summaryTitle = "Summary";
 
-export const summaryError = "Error! Couldn't get summary."
+export const summaryError = "Error! Couldn't get summary.";
 
-export const copyToClipboard = "Copy to clipboard"
+export const copyToClipboard = "Copy to clipboard";
 
-export const copied = "Copied!"
+export const copied = "Copied!";
 
-export const copyError = "Error! Text not copied."
+export const copyError = "Error! Text not copied.";
 
-export const close = "Close"
+export const close = "Close";
 
-export const knowledgeGraphTitle = "Knowledge Graph"
+export const knowledgeGraphTitle = "Knowledge Graph";
 
-export const knowledgeGraphError = "Error! Couldn't get knowledge graph."
+export const knowledgeGraphError = "Error! Couldn't get knowledge graph.";
+
+export const knowledgeGraphWaiting = "No connections so far";
