@@ -50,6 +50,7 @@ export default function KnowledgeGraph({ references }) {
         <ForceGraph3D
           graphData={knowledgeGraphData}
           nodeId="title"
+          linkWidth={2}
           ref={fgRef}
           height={400}
           width={600}
