@@ -3,6 +3,6 @@ export const BASE_URL =
 export const UPLOAD_URL = "upload";
 
 export const SUMMARY_BASE_URL =
-  "https://summary-middleware.onrender.com";
+  "https://clever-reader-summary-mn7p.onrender.com/file";
 
 export const REFERENCES = "references";
